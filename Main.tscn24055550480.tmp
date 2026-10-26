@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://cfqypb3aafthb"]
+
+[ext_resource type="Script" uid="uid://dx1kuny6ji3ek" path="res://player_movement.gd" id="1_glv2v"]
+[ext_resource type="Script" uid="uid://beqw3x6tsvhm8" path="res://player_interact_raycast.gd" id="2_cm0pq"]
+[ext_resource type="Script" uid="uid://bsbhe12jl5id8" path="res://head.gd" id="2_fos0i"]
+[ext_resource type="Script" uid="uid://bdwrmjmodyta4" path="res://button_ahead.gd" id="2_r0du0"]
+[ext_resource type="Script" uid="uid://clgnb5oct7l25" path="res://rover_static_body.gd" id="3_cm0pq"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ayyc1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4s4q"]
+size = Vector3(1, 0.5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_oswh7"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_0alb6"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ayyc1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a368p"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_chw0c"]
+
+[node name="Main (Node3D)" type="Node3D" unique_id=1445796514]
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=266951257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.044044495, 11.534232, 0)
+disable_mode = 2
+floor_stop_on_slope = false
+script = ExtResource("1_glv2v")
+
+[node name="Head" type="Camera3D" parent="Player" unique_id=185801676]
+current = true
+script = ExtResource("2_fos0i")
+
+[node name="RayCast3D" type="RayCast3D" parent="Player/Head" unique_id=381948238]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -3, 0, 0, 0)
+script = ExtResource("2_cm0pq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=196247890]
+visible = false
+shape = SubResource("SphereShape3D_ayyc1")
+
+[node name="PlayerPlatformStatic" type="StaticBody3D" parent="." unique_id=627813432]
+
+[node name="PlayerPlatformCollision" type="CollisionShape3D" parent="PlayerPlatformStatic" unique_id=2056538450]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 10, 0)
+shape = SubResource("BoxShape3D_c4s4q")
+
+[node name="PlayerPlatformMesh" type="MeshInstance3D" parent="PlayerPlatformStatic/PlayerPlatformCollision" unique_id=2123739330]
+transform = Transform3D(1.005, 0, 0, 0, 0.5, 0, 0, 0, 1.005, 0, 0, 0)
+mesh = SubResource("BoxMesh_oswh7")
+
+[node name="ButtonAhead" type="StaticBody3D" parent="PlayerPlatformStatic" unique_id=112388650]
+transform = Transform3D(1, 0, 0, 0, 0.175, 0, 0, 0, 1, 4.240834, 11.977455, 3.077097)
+script = ExtResource("2_r0du0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerPlatformStatic/ButtonAhead" unique_id=1692939258]
+mesh = SubResource("CylinderMesh_0alb6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerPlatformStatic/ButtonAhead" unique_id=510803577]
+shape = SubResource("CylinderShape3D_ayyc1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1412188546]
+transform = Transform3D(1, 0, 0, 0, 0.46792984, 0.88376564, 0, -0.88376564, 0.46792984, 0, 25.909355, 0)
+shadow_enabled = true
+
+[node name="RoverStaticBody" type="StaticBody3D" parent="." unique_id=356854698 node_paths=PackedStringArray("button")]
+transform = Transform3D(15, 0, 0, 0, 2.007, 0, 0, 0, 10, 18, 0, 0)
+script = ExtResource("3_cm0pq")
+button = NodePath("../PlayerPlatformStatic/ButtonAhead")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RoverStaticBody" unique_id=1865148875]
+shape = SubResource("BoxShape3D_a368p")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RoverStaticBody" unique_id=941957612]
+mesh = SubResource("BoxMesh_chw0c")
+
+[node name="Label3D" type="Label3D" parent="RoverStaticBody" unique_id=735782258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7705515, 0)
+billboard = 1
+text = "Rover
+"
