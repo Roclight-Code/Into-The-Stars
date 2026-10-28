@@ -119,3 +119,6 @@ shape = SubResource("CylinderShape3D_0alb6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1350618305]
 mesh = SubResource("CylinderMesh_ayyc1")
+
+[connection signal="held" from="StaticBody3D" to="RoverStaticBody" method="_on_up_held"]
+[connection signal="released" from="StaticBody3D" to="RoverStaticBody" method="_on_button_released"]

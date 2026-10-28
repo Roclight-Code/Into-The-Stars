@@ -12,6 +12,7 @@ func interact(_player) -> void:
 	pass  # the player script calls hold() while E is down
 
 func hold(_player) -> void:
+	#print("button hold")
 	is_held = true
 	held.emit()
 

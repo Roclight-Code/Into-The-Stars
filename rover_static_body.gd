@@ -32,3 +32,7 @@ func _on_button_released() -> void:
 
 func _on_switch_toggled(is_on: bool) -> void:
 	sideways_mode = is_on
+
+
+func _on_static_body_3d_held() -> void:
+	pass # Replace with function body.
