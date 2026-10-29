@@ -15,22 +15,32 @@ class_name control
 @export var center_radius := 18.0
 @export var bar_width := 3.0
 
+@export var noise_color := Color(1.0, 0.85, 0.1)
+@export var noise_duration := 1.0
+
 const DIRS := 8
 const OCT_K := 1.0823922   # 1 / cos(22.5°)
 
 var _cells: Array = []
 var _timer := 0.0
 var alert := false
+var _noises := {}  # Vector2i(ring, dir) -> seconds left
 
 func _ready() -> void:
 	_cells.resize(DIRS)
 	_cells.fill(null)
+	NoiseBus.noise_made.connect(_on_noise_made)
+
 
 func _process(delta: float) -> void:
 	_timer += delta
 	if _timer >= scan_interval:
 		_timer = 0.0
 		_scan()
+	for key in _noises.keys():
+		_noises[key] -= delta
+		if _noises[key] <= 0.0:
+			_noises.erase(key)
 	queue_redraw()
 
 func _scan() -> void:
@@ -81,6 +91,16 @@ func _draw() -> void:
 		var col := enemy_color if cell.enemy else wall_color
 		draw_colored_polygon(_cell(c, TAU * i / DIRS, inner, ring_pixels[r]), col)
 
+	# noise cells
+	for key in _noises:
+		var nr: int = key.x
+		var ni: int = key.y
+		var fade := clampf(_noises[key] / noise_duration, 0.0, 1.0)
+		var n_inner := center_radius if nr == 0 else ring_pixels[nr - 1]
+		var ncol := noise_color
+		ncol.a = 0.35 + 0.5 * fade
+		draw_colored_polygon(_cell(c, TAU * ni / DIRS, n_inner, ring_pixels[nr]), ncol)
+
 	# window bars: ring outlines + 8 spokes
 	for r in ring_pixels.size():
 		_outline(c, ring_pixels[r])
@@ -89,6 +109,17 @@ func _draw() -> void:
 		var t := TAU * (k + 0.5) / DIRS
 		var d := Vector2(sin(t), -cos(t))
 		draw_line(c + d * center_radius * OCT_K, c + d * outer * OCT_K, frame_color, bar_width, true)
+
+# exclamation marks
+	for key in _noises:
+		var er: int = key.x
+		var ei: int = key.y
+		var ea: float = TAU * ei / DIRS
+		var e_inner: float = center_radius if er == 0 else ring_pixels[er - 1]
+		var mid: float = (e_inner + ring_pixels[er]) * 0.5
+		var p: Vector2 = c + Vector2(sin(ea), -cos(ea)) * mid
+		draw_string(ThemeDB.fallback_font, p + Vector2(-10, 8), "!",
+			HORIZONTAL_ALIGNMENT_CENTER, 20, 22, Color(0.6, 0.05, 0.05))
 
 	# proximity warning: pulsing outline on the molding
 	if alert:
@@ -127,3 +158,20 @@ func _cell(c: Vector2, a: float, r0: float, r1: float) -> PackedVector2Array:
 	return PackedVector2Array([
 		c + v0 * r1 * OCT_K, c + v1 * r1 * OCT_K,
 		c + v1 * r0 * OCT_K, c + v0 * r0 * OCT_K])
+
+func _on_noise_made(pos: Vector3, level) -> void:
+	if target == null:
+		return
+	var offset := pos - target.global_position
+	var d := offset.length()
+	if d > NoiseBus.RANGES[level]: # If you’d rather show every noise on the map regardless, delete the if d > NoiseBus.RANGES[level] check. 
+		return  # too far away to be heard
+	var ring := -1
+	for r in ring_distances.size():
+		if d <= ring_distances[r]:
+			ring = r
+			break
+	if ring == -1:
+		return  # off the map
+	var dir := posmod(roundi(atan2(offset.x, -offset.z) / (TAU / DIRS)), DIRS)
+	_noises[Vector2i(ring, dir)] = noise_duration
