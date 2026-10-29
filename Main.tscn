@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://beqw3x6tsvhm8" path="res://player_interact_raycast.gd" id="2_cm0pq"]
 [ext_resource type="Script" uid="uid://clgnb5oct7l25" path="res://rover_static_body.gd" id="3_cm0pq"]
 [ext_resource type="Script" uid="uid://bq7jnri3lw4nk" path="res://static_body_3d.gd" id="4_cm0pq"]
+[ext_resource type="Script" uid="uid://bgugf3lo84p5p" path="res://control.gd" id="5_fos0i"]
 
 [sub_resource type="GDScript" id="GDScript_cm0pq"]
 script/source = "extends Camera3D
@@ -23,6 +24,10 @@ size = Vector3(1, 0.5, 1)
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_0alb6"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_ayyc1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ayyc1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ayyc1"]
 
 [node name="Main (Node3D)" type="Node3D" unique_id=1445796514]
 
@@ -119,6 +124,26 @@ shape = SubResource("CylinderShape3D_0alb6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1350618305]
 mesh = SubResource("CylinderMesh_ayyc1")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1830825600]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=689648934 node_paths=PackedStringArray("target")]
+custom_minimum_size = Vector2(260, 260)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 260.0
+offset_bottom = 260.0
+script = ExtResource("5_fos0i")
+target = NodePath("../../RoverStaticBody")
+
+[node name="TestWall" type="StaticBody3D" parent="." unique_id=1592318661]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.89424, 0, -33.253838)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TestWall" unique_id=1843720641]
+shape = SubResource("BoxShape3D_ayyc1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TestWall" unique_id=947740466]
+mesh = SubResource("BoxMesh_ayyc1")
 
 [connection signal="held" from="StaticBody3D" to="RoverStaticBody" method="_on_up_held"]
 [connection signal="released" from="StaticBody3D" to="RoverStaticBody" method="_on_button_released"]
