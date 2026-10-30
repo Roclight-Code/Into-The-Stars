@@ -18,15 +18,22 @@ class_name control
 @export var noise_color := Color(1.0, 0.85, 0.1)
 @export var noise_duration := 1.0
 
+@export var only_if_heard := true
+
 const DIRS := 8
 const OCT_K := 1.0823922   # 1 / cos(22.5°)
 
 var _cells: Array = []
 var _timer := 0.0
 var alert := false
-var _noises := {}  # Vector2i(ring, dir) -> seconds left
+var _ring_glow: Array[float] = []  # seconds of glow left, one per ring
 
 func _ready() -> void:
+	_cells.resize(DIRS)
+	_cells.fill(null)
+	_ring_glow.resize(ring_pixels.size())
+	_ring_glow.fill(0.0)
+	NoiseBus.noise_made.connect(_on_noise_made)
 	_cells.resize(DIRS)
 	_cells.fill(null)
 	NoiseBus.noise_made.connect(_on_noise_made)
@@ -37,10 +44,13 @@ func _process(delta: float) -> void:
 	if _timer >= scan_interval:
 		_timer = 0.0
 		_scan()
-	for key in _noises.keys():
-		_noises[key] -= delta
-		if _noises[key] <= 0.0:
-			_noises.erase(key)
+	for r in _ring_glow.size():
+		_ring_glow[r] = maxf(_ring_glow[r] - delta, 0.0)
+	queue_redraw()
+	_timer += delta
+	if _timer >= scan_interval:
+		_timer = 0.0
+		_scan()
 	queue_redraw()
 
 func _scan() -> void:
@@ -91,35 +101,15 @@ func _draw() -> void:
 		var col := enemy_color if cell.enemy else wall_color
 		draw_colored_polygon(_cell(c, TAU * i / DIRS, inner, ring_pixels[r]), col)
 
-	# noise cells
-	for key in _noises:
-		var nr: int = key.x
-		var ni: int = key.y
-		var fade := clampf(_noises[key] / noise_duration, 0.0, 1.0)
-		var n_inner := center_radius if nr == 0 else ring_pixels[nr - 1]
-		var ncol := noise_color
-		ncol.a = 0.35 + 0.5 * fade
-		draw_colored_polygon(_cell(c, TAU * ni / DIRS, n_inner, ring_pixels[nr]), ncol)
-
-	# window bars: ring outlines + 8 spokes
+	# window bars: ring outlines + 8 spokes?
 	for r in ring_pixels.size():
-		_outline(c, ring_pixels[r])
-	_outline(c, center_radius)
+		var glow: float = clampf(_ring_glow[r] / noise_duration, 0.0, 1.0)
+		var ring_col: Color = frame_color.lerp(noise_color, glow)
+		_outline(c, ring_pixels[r], ring_col, bar_width + 2.0 * glow)
 	for k in DIRS:
 		var t := TAU * (k + 0.5) / DIRS
 		var d := Vector2(sin(t), -cos(t))
 		draw_line(c + d * center_radius * OCT_K, c + d * outer * OCT_K, frame_color, bar_width, true)
-
-# exclamation marks
-	for key in _noises:
-		var er: int = key.x
-		var ei: int = key.y
-		var ea: float = TAU * ei / DIRS
-		var e_inner: float = center_radius if er == 0 else ring_pixels[er - 1]
-		var mid: float = (e_inner + ring_pixels[er]) * 0.5
-		var p: Vector2 = c + Vector2(sin(ea), -cos(ea)) * mid
-		draw_string(ThemeDB.fallback_font, p + Vector2(-10, 8), "!",
-			HORIZONTAL_ALIGNMENT_CENTER, 20, 22, Color(0.6, 0.05, 0.05))
 
 	# proximity warning: pulsing outline on the molding
 	if alert:
@@ -145,10 +135,10 @@ func _oct(c: Vector2, apothem: float) -> PackedVector2Array:
 		pts.append(c + Vector2(sin(t), -cos(t)) * apothem * OCT_K)
 	return pts
 
-func _outline(c: Vector2, apothem: float) -> void:
+func _outline(c: Vector2, apothem: float, col: Color = frame_color, w: float = bar_width) -> void:
 	var pts := _oct(c, apothem)
 	pts.append(pts[0])
-	draw_polyline(pts, frame_color, bar_width, true)
+	draw_polyline(pts, col, w, true)
 
 func _cell(c: Vector2, a: float, r0: float, r1: float) -> PackedVector2Array:
 	var t0 := a - TAU / DIRS / 2.0
@@ -159,19 +149,11 @@ func _cell(c: Vector2, a: float, r0: float, r1: float) -> PackedVector2Array:
 		c + v0 * r1 * OCT_K, c + v1 * r1 * OCT_K,
 		c + v1 * r0 * OCT_K, c + v0 * r0 * OCT_K])
 
-func _on_noise_made(pos: Vector3, level) -> void:
-	if target == null:
+func _on_noise_made(pos: Vector3, level: int) -> void:
+	var ring: int = level - 1  # VERY_CLOSE = 0, CLOSE = 1, FAR = 2
+	if ring < 0 or ring >= ring_pixels.size():
 		return
-	var offset := pos - target.global_position
-	var d := offset.length()
-	if d > NoiseBus.RANGES[level]: # If you’d rather show every noise on the map regardless, delete the if d > NoiseBus.RANGES[level] check. 
-		return  # too far away to be heard
-	var ring := -1
-	for r in ring_distances.size():
-		if d <= ring_distances[r]:
-			ring = r
-			break
-	if ring == -1:
-		return  # off the map
-	var dir := posmod(roundi(atan2(offset.x, -offset.z) / (TAU / DIRS)), DIRS)
-	_noises[Vector2i(ring, dir)] = noise_duration
+	if only_if_heard and target != null:
+		if pos.distance_to(target.global_position) > NoiseBus.RANGES[level]:
+			return
+	_ring_glow[ring] = noise_duration
