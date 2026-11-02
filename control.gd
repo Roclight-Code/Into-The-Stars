@@ -1,5 +1,4 @@
 extends Control
-class_name control
 
 @export var target: Node3D
 @export_flags_3d_physics var scan_mask := 3
@@ -20,13 +19,26 @@ class_name control
 
 @export var only_if_heard := true
 
+# big scan
+@export var scan_radius := 30.0
+@export var pulse_time := 0.8
+@export var hold_time := 1.5
+@export var fade_time := 2.0
+@export var scan_color := Color(0.6, 0.9, 1.0)
+
 const DIRS := 8
 const OCT_K := 1.0823922   # 1 / cos(22.5°)
 
 var _cells: Array = []
 var _timer := 0.0
 var alert := false
-var _ring_glow: Array[float] = []  # seconds of glow left, one per ring
+var _ring_glow: Array[float] = []
+
+var scan_progress := 0.0
+var reveal_alpha := 0.0
+var scan_origin := Vector3.ZERO
+var _reveal_pts: PackedVector2Array = PackedVector2Array()
+var _wall_points: PackedVector2Array = PackedVector2Array()
 
 func _ready() -> void:
 	_cells.resize(DIRS)
@@ -34,10 +46,8 @@ func _ready() -> void:
 	_ring_glow.resize(ring_pixels.size())
 	_ring_glow.fill(0.0)
 	NoiseBus.noise_made.connect(_on_noise_made)
-	_cells.resize(DIRS)
-	_cells.fill(null)
-	NoiseBus.noise_made.connect(_on_noise_made)
-
+	if ResourceLoader.exists("res://data/wall_points.tres"):
+		_wall_points = load("res://data/wall_points.tres").points
 
 func _process(delta: float) -> void:
 	_timer += delta
@@ -47,11 +57,35 @@ func _process(delta: float) -> void:
 	for r in _ring_glow.size():
 		_ring_glow[r] = maxf(_ring_glow[r] - delta, 0.0)
 	queue_redraw()
-	_timer += delta
-	if _timer >= scan_interval:
-		_timer = 0.0
-		_scan()
-	queue_redraw()
+
+# TEMPORARY: press F to test the big scan
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F:
+		if target:
+			start_scan(target.global_position)
+
+func start_scan(origin: Vector3) -> void:
+	scan_origin = origin
+		# TEMP TEST: fake walls around the player if no baked map exists
+	#if _wall_points.is_empty():
+		#var o2 := Vector2(origin.x, origin.z)
+		#for i in 200:
+			#var a := TAU * i / 200.0
+			#var r := 10.0 if i % 2 == 0 else 22.0   # two rings of fake walls
+			#_wall_points.append(o2 + Vector2(cos(a), sin(a)) * r)
+	scan_progress = 0.0
+	reveal_alpha = 1.0
+	# filter once per scan, not every frame
+	_reveal_pts = PackedVector2Array()
+	var o := Vector2(origin.x, origin.z)
+	var r2 := scan_radius * scan_radius
+	for p in _wall_points:
+		if p.distance_squared_to(o) <= r2:
+			_reveal_pts.append(p)
+	var tw := create_tween()
+	tw.tween_property(self, "scan_progress", 1.0, pulse_time)
+	tw.tween_interval(hold_time)
+	tw.tween_property(self, "reveal_alpha", 0.0, fade_time)
 
 func _scan() -> void:
 	if target == null:
@@ -91,6 +125,10 @@ func _draw() -> void:
 	# glass
 	draw_colored_polygon(_oct(c, outer), glass_color)
 
+	# big scan reveal (on the glass, under the cells and bars)
+	if reveal_alpha > 0.0:
+		_draw_scan(c, outer)
+
 	# lit cells
 	for i in DIRS:
 		var cell = _cells[i]
@@ -101,7 +139,7 @@ func _draw() -> void:
 		var col := enemy_color if cell.enemy else wall_color
 		draw_colored_polygon(_cell(c, TAU * i / DIRS, inner, ring_pixels[r]), col)
 
-	# window bars: ring outlines + 8 spokes?
+	# window bars: ring outlines + 8 spokes
 	for r in ring_pixels.size():
 		var glow: float = clampf(_ring_glow[r] / noise_duration, 0.0, 1.0)
 		var ring_col: Color = frame_color.lerp(noise_color, glow)
@@ -127,6 +165,27 @@ func _draw() -> void:
 	draw_colored_polygon(PackedVector2Array([
 		Vector2(0, -12), Vector2(9, 10), Vector2(0, 5), Vector2(-9, 10)]), Color(0.1, 0.15, 0.3))
 	draw_set_transform(Vector2.ZERO, 0.0)
+
+func _draw_scan(c: Vector2, outer: float) -> void:
+	var px_per_unit := outer / scan_radius
+	var pulse_r := scan_progress * outer
+	var o := Vector2(scan_origin.x, scan_origin.z)
+
+	# expanding pulse ring: dark outline + bright core
+	if scan_progress < 1.0:
+		var fade := clampf((1.0 - scan_progress * 0.5) * reveal_alpha, 0.0, 1.0)
+		var wash := Color(0.05, 0.1, 0.35, 0.18 * fade)
+		draw_circle(c, pulse_r, wash)
+		draw_arc(c, pulse_r, 0, TAU, 64, Color(0.02, 0.05, 0.25, fade), 7.0, true)   # dark navy outline
+		draw_arc(c, pulse_r, 0, TAU, 64, Color(1.0, 1.0, 1.0, fade), 3.0, true)      # white core
+
+	# revealed wall points inside the pulse
+	var dot := scan_color
+	dot.a = 0.8 * reveal_alpha
+	for p in _reveal_pts:
+		var rel := (p - o) * px_per_unit
+		if rel.length() <= pulse_r:
+			draw_rect(Rect2(c + rel - Vector2(1.5, 1.5), Vector2(3, 3)), dot)
 
 func _oct(c: Vector2, apothem: float) -> PackedVector2Array:
 	var pts := PackedVector2Array()
@@ -157,3 +216,4 @@ func _on_noise_made(pos: Vector3, level: int) -> void:
 		if pos.distance_to(target.global_position) > NoiseBus.RANGES[level]:
 			return
 	_ring_glow[ring] = noise_duration
+#One thing to expect: the scan maps linearly across the glass (30 units across 115 px), but your rings are spaced non-linearly (3/8/15 units at 45/80/115 px). So revealed walls won’t line up with the ring lines. It should still look fine as a “big picture” overlay. If it looks off, we can remap distances to match the rings.
