@@ -19,9 +19,12 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var body_collision: CollisionShape3D = $CollisionShape3D
 
 var current_target: Node = null
+var held_target: Node = null
 var sitting := false
 var current_seat: Node3D = null
 var _transitioning := false
+
+var held_button: Node = null   # top of the script, with your other variables
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -72,6 +75,7 @@ func _physics_process(delta: float) -> void:
 
 		move_and_slide()
 
+
 	if not _transitioning:
 		#if ray.is_colliding():
 			#var c := ray.get_collider()
@@ -80,6 +84,9 @@ func _physics_process(delta: float) -> void:
 		_handle_interact_input()
 
 func _update_target() -> void:
+	# While E is held on something, stay locked on it even if we look away
+	if held_target:
+		return
 	var hit: Node = null
 	if ray.is_colliding():
 		var collider := ray.get_collider()
@@ -100,18 +107,26 @@ func _update_target() -> void:
 		reticle.color = Color(1, 1, 1)
 
 func _handle_interact_input() -> void:
+	# Something is held: it only lets go when E is released, wherever we're looking
+	if held_target:
+		if not is_instance_valid(held_target):
+			held_target = null
+		elif not Input.is_action_pressed("interact"):
+			if held_target.has_method("release"):
+				held_target.release(self)
+			held_target = null
+		elif held_target.has_method("hold"):
+			held_target.hold(self)
+		return
+
 	if current_target == null:
 		return
 
 	if Input.is_action_just_pressed("interact"):
 		current_target.interact(self)
-
-	if current_target.has_method("hold"):
-		if Input.is_action_pressed("interact"):
-			current_target.hold(self)
-		if Input.is_action_just_released("interact"):
-			if current_target.has_method("release"):
-				current_target.release(self)
+		# Only things with hold() get locked on; seats and one-shot interactables don't
+		if current_target.has_method("hold"):
+			held_target = current_target
 
 func sit_down(seat: Node3D) -> void:
 	if sitting or _transitioning:
@@ -141,6 +156,13 @@ func sit_down(seat: Node3D) -> void:
 func stand_up() -> void:
 	if not sitting or _transitioning:
 		return
+
+	# let go of any held button/crank before standing
+	if held_target:
+		if is_instance_valid(held_target) and held_target.has_method("release"):
+			held_target.release(self)
+		held_target = null
+
 	_transitioning = true
 
 	# Carry the head's yaw over to the body so the view doesn't snap on standing

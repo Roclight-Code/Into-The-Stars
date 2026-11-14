@@ -139,11 +139,12 @@ script = ExtResource("4_3dxm6")
 scan_active = true
 display = NodePath("../../MonitorScreen/LidarViewport/LidarDisplay")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=551556612 node_paths=PackedStringArray("rover")]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=551556612 node_paths=PackedStringArray("visual")]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.30818778, 12.084532, -4.375778)
 collision_layer = 2
 script = ExtResource("4_cm0pq")
-rover = NodePath("../RoverStaticBody")
+visual = NodePath("MeshInstance3D")
+press_depth = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1230208797]
 shape = SubResource("CylinderShape3D_0alb6")
@@ -200,6 +201,17 @@ shape = SubResource("BoxShape3D_nvbm3")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Seat/CollisionShape3D" unique_id=1641732904]
 mesh = SubResource("BoxMesh_c4s4q")
+
+[node name="BackButton" type="StaticBody3D" parent="." unique_id=138240293]
+transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.31674498, 12.084532, -4.146054)
+collision_layer = 2
+script = ExtResource("4_cm0pq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BackButton" unique_id=1663643626]
+shape = SubResource("CylinderShape3D_0alb6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BackButton" unique_id=2073127721]
+mesh = SubResource("CylinderMesh_ayyc1")
 
 [connection signal="held" from="StaticBody3D" to="RoverStaticBody" method="_on_up_held"]
 [connection signal="released" from="StaticBody3D" to="RoverStaticBody" method="_on_button_released"]
