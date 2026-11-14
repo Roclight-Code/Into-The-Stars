@@ -10,6 +10,9 @@ extends Node3D
 @export var display: Control
 @export var rover_body: CollisionObject3D
 
+@export var depth_falloff: float = 0.15       # higher = distance dims dots faster
+@export_range(0.0, 1.0) var angle_shading: float = 0.65  # 0 = ignore surface angle, 1 = strong
+
 var _query := PhysicsRayQueryParameters3D.new()
 
 func _ready() -> void:
@@ -53,7 +56,15 @@ func _physics_process(_delta: float) -> void:
 
 			if hit:
 				var dist := origin.distance_to(hit.position)
+
+				# 1) Depth: exponential falloff, so small distance changes are visible up close
+				var depth_b := exp(-dist * depth_falloff)
+
+				# 2) Surface angle: faces pointing at the camera are bright, grazing ones are dim
+				var facing := absf(hit.normal.dot(-dir))
+				var angle_b := lerpf(1.0 - angle_shading, 1.0, facing)
+
 				positions.append(Vector2(u, v))
-				brightness.append(1.0 - dist / max_range)  # close = bright
+				brightness.append(depth_b * angle_b)
 
 	display.set_dots(positions, brightness)

@@ -166,9 +166,11 @@ target = NodePath("../../RoverStaticBody")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.89424, 0, -33.253838)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TestWall" unique_id=1843720641]
+transform = Transform3D(0.72520286, 0, 0.6885353, 0, 1, 0, -0.6885353, 0, 0.72520286, 0, 0, 0)
 shape = SubResource("BoxShape3D_ayyc1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="TestWall" unique_id=947740466]
+transform = Transform3D(0.72371733, 0, 0.69009656, 0, 1, 0, -0.69009656, 0, 0.72371733, 0, 0, 0)
 mesh = SubResource("BoxMesh_ayyc1")
 
 [node name="MonitorScreen" type="MeshInstance3D" parent="." unique_id=804967602]
