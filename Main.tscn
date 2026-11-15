@@ -228,8 +228,9 @@ mesh = SubResource("CylinderMesh_ayyc1")
 [node name="Marker3D" type="Marker3D" parent="BackButton" unique_id=1036332596]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9253693, 0)
 
-[node name="SteeringCrank" parent="." unique_id=290134074 instance=ExtResource("10_wkp8b")]
+[node name="SteeringCrank" parent="." unique_id=290134074 node_paths=PackedStringArray("rover") instance=ExtResource("10_wkp8b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8842446, 12.378478, -4.34978)
+rover = NodePath("../RoverStaticBody")
 
 [connection signal="held" from="StaticBody3D" to="RoverStaticBody" method="_on_up_held"]
 [connection signal="released" from="StaticBody3D" to="RoverStaticBody" method="_on_button_released"]
