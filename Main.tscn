@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://cqt7b8kh7c15" path="res://lidar_display.gd" id="7_lgr22"]
 [ext_resource type="Script" uid="uid://dujfmgcs8dyp0" path="res://seat_script.gd" id="8_trn2v"]
 [ext_resource type="Script" uid="uid://bur1a3iltros8" path="res://back_button.gd" id="9_03owx"]
+[ext_resource type="PackedScene" uid="uid://b00okfs1jm7r5" path="res://steering_crank.tscn" id="10_wkp8b"]
 
 [sub_resource type="GDScript" id="GDScript_cm0pq"]
 script/source = "extends Camera3D
@@ -226,6 +227,9 @@ mesh = SubResource("CylinderMesh_ayyc1")
 
 [node name="Marker3D" type="Marker3D" parent="BackButton" unique_id=1036332596]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9253693, 0)
+
+[node name="SteeringCrank" parent="." unique_id=290134074 instance=ExtResource("10_wkp8b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8842446, 12.378478, -4.34978)
 
 [connection signal="held" from="StaticBody3D" to="RoverStaticBody" method="_on_up_held"]
 [connection signal="released" from="StaticBody3D" to="RoverStaticBody" method="_on_button_released"]

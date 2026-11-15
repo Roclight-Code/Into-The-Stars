@@ -26,11 +26,17 @@ var _transitioning := false
 
 var held_button: Node = null   # top of the script, with your other variables
 
+var controls_locked := false
+
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	ray.add_exception(self)
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Locked (e.g. zoomed in on the crank): ignore look, stand up, and mouse capture
+	if controls_locked:
+		return
+
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		var dx: float = event.relative.x * mouse_sensitivity
 		var dy: float = event.relative.y * mouse_sensitivity
@@ -56,6 +62,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		stand_up()
 
 func _physics_process(delta: float) -> void:
+	# Locked: no movement, no interact raycast, hide the prompt and reticle
+	if controls_locked:
+		prompt.text = ""
+		reticle.visible = false
+		return
+	reticle.visible = true
+
 	if not sitting and not _transitioning:
 		if not is_on_floor():
 			velocity.y -= gravity * delta
