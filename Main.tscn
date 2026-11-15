@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://bgugf3lo84p5p" path="res://control.gd" id="5_fos0i"]
 [ext_resource type="Script" uid="uid://cqt7b8kh7c15" path="res://lidar_display.gd" id="7_lgr22"]
 [ext_resource type="Script" uid="uid://dujfmgcs8dyp0" path="res://seat_script.gd" id="8_trn2v"]
+[ext_resource type="Script" uid="uid://bur1a3iltros8" path="res://back_button.gd" id="9_03owx"]
 
 [sub_resource type="GDScript" id="GDScript_cm0pq"]
 script/source = "extends Camera3D
@@ -139,18 +140,23 @@ script = ExtResource("4_3dxm6")
 scan_active = true
 display = NodePath("../../MonitorScreen/LidarViewport/LidarDisplay")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=551556612 node_paths=PackedStringArray("visual")]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=551556612 node_paths=PackedStringArray("rover", "visual", "pressed_marker")]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.30818778, 12.084532, -4.375778)
 collision_layer = 2
 script = ExtResource("4_cm0pq")
+rover = NodePath("../RoverStaticBody")
 visual = NodePath("MeshInstance3D")
 press_depth = 0.5
+pressed_marker = NodePath("Marker3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1230208797]
 shape = SubResource("CylinderShape3D_0alb6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1350618305]
 mesh = SubResource("CylinderMesh_ayyc1")
+
+[node name="Marker3D" type="Marker3D" parent="StaticBody3D" unique_id=883445689]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.0575562, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1830825600]
 
@@ -202,16 +208,26 @@ shape = SubResource("BoxShape3D_nvbm3")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Seat/CollisionShape3D" unique_id=1641732904]
 mesh = SubResource("BoxMesh_c4s4q")
 
-[node name="BackButton" type="StaticBody3D" parent="." unique_id=138240293]
+[node name="BackButton" type="StaticBody3D" parent="." unique_id=138240293 node_paths=PackedStringArray("rover", "visual", "pressed_marker")]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.31674498, 12.084532, -4.146054)
 collision_layer = 2
-script = ExtResource("4_cm0pq")
+script = ExtResource("9_03owx")
+rover = NodePath("../RoverStaticBody")
+visual = NodePath("MeshInstance3D")
+press_depth = 0.5
+pressed_marker = NodePath("Marker3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BackButton" unique_id=1663643626]
 shape = SubResource("CylinderShape3D_0alb6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BackButton" unique_id=2073127721]
+unique_name_in_owner = true
 mesh = SubResource("CylinderMesh_ayyc1")
+
+[node name="Marker3D" type="Marker3D" parent="BackButton" unique_id=1036332596]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9253693, 0)
 
 [connection signal="held" from="StaticBody3D" to="RoverStaticBody" method="_on_up_held"]
 [connection signal="released" from="StaticBody3D" to="RoverStaticBody" method="_on_button_released"]
+[connection signal="held" from="BackButton" to="RoverStaticBody" method="_on_down_held"]
+[connection signal="released" from="BackButton" to="RoverStaticBody" method="_on_button_released"]
