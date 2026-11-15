@@ -6,6 +6,8 @@ func _ready() -> void:
 	_convert(get_tree().current_scene)
 
 func _convert(node: Node) -> void:
+	if node.is_in_group("no_psx"):
+		return  # skips this node and all of its children
 	if node is MeshInstance3D and node.mesh:
 		for i in node.mesh.get_surface_count():
 			var m = node.get_active_material(i)
