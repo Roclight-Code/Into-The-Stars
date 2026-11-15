@@ -10,6 +10,9 @@
 [ext_resource type="Script" uid="uid://dujfmgcs8dyp0" path="res://seat_script.gd" id="8_trn2v"]
 [ext_resource type="Script" uid="uid://bur1a3iltros8" path="res://back_button.gd" id="9_03owx"]
 [ext_resource type="PackedScene" uid="uid://b00okfs1jm7r5" path="res://steering_crank.tscn" id="10_wkp8b"]
+[ext_resource type="Script" uid="uid://fy3ut1kx1xkk" path="res://psx_layer.gd" id="11_20pc6"]
+[ext_resource type="Script" uid="uid://cx84yy3wfrxlu" path="res://node.gd" id="12_5vvyt"]
+[ext_resource type="Shader" uid="uid://cf77wougvcrki" path="res://shaders/psx_post.gdshader" id="12_c6i3y"]
 
 [sub_resource type="GDScript" id="GDScript_cm0pq"]
 script/source = "extends Camera3D
@@ -48,6 +51,12 @@ albedo_texture = SubResource("ViewportTexture_trn2v")
 [sub_resource type="BoxShape3D" id="BoxShape3D_nvbm3"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_c4s4q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c2ibq"]
+shader = ExtResource("12_c6i3y")
+shader_parameter/target_res = Vector2(320, 240)
+shader_parameter/color_levels = 32.0
+shader_parameter/dither_strength = 0.6
 
 [node name="Main (Node3D)" type="Node3D" unique_id=1445796514]
 
@@ -231,6 +240,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9253693, 0)
 [node name="SteeringCrank" parent="." unique_id=290134074 node_paths=PackedStringArray("rover") instance=ExtResource("10_wkp8b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8842446, 12.378478, -4.34978)
 rover = NodePath("../RoverStaticBody")
+
+[node name="PSXLayer" type="CanvasLayer" parent="." unique_id=1850207328]
+script = ExtResource("11_20pc6")
+
+[node name="ColorRect" type="ColorRect" parent="PSXLayer" unique_id=1218126066]
+material = SubResource("ShaderMaterial_c2ibq")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Node" type="Node" parent="." unique_id=2127766353]
+script = ExtResource("12_5vvyt")
 
 [connection signal="held" from="StaticBody3D" to="RoverStaticBody" method="_on_up_held"]
 [connection signal="released" from="StaticBody3D" to="RoverStaticBody" method="_on_button_released"]

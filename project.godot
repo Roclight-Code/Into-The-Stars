@@ -44,3 +44,10 @@ stand_up={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+
+[shader_globals]
+
+psx_enabled={
+"type": "float",
+"value": 1.0
+}
