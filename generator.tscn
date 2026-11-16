@@ -35,7 +35,7 @@ script = ExtResource("1_k6sox")
 mesh = SubResource("QuadMesh_ayyc1")
 
 [node name="FillPivot" type="Node3D" parent="MeshInstance3D" unique_id=1120194809 node_paths=PackedStringArray("generator", "fill_pivot", "fill_mesh")]
-transform = Transform3D(1, 0, 0, 0, 0.289221, 0, 0, 0, 1, 0.5, -0.155, 0)
+transform = Transform3D(1, 0, 0, 0, 0.289221, 0, 0, 0, 1, -0.50682974, -0.155, 0)
 script = ExtResource("2_l0m0h")
 generator = NodePath("../..")
 fill_pivot = NodePath(".")
