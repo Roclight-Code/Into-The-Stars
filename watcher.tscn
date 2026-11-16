@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dk8ls8w17ubpo"]
+
+[ext_resource type="PackedScene" uid="uid://df8sbi7tfqchp" path="res://assets/Watcher.glb" id="1_d7tun"]
+
+[node name="Watcher" unique_id=193177057 instance=ExtResource("1_d7tun")]

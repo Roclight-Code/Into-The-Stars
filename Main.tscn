@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://fy3ut1kx1xkk" path="res://psx_layer.gd" id="11_20pc6"]
 [ext_resource type="Script" uid="uid://cx84yy3wfrxlu" path="res://node.gd" id="12_5vvyt"]
 [ext_resource type="Shader" uid="uid://cf77wougvcrki" path="res://shaders/psx_post.gdshader" id="12_c6i3y"]
+[ext_resource type="PackedScene" uid="uid://b2a7ykg3cq00b" path="res://generator.tscn" id="14_c2ibq"]
 
 [sub_resource type="GDScript" id="GDScript_cm0pq"]
 script/source = "extends Camera3D
@@ -144,14 +145,15 @@ billboard = 1
 text = "Rover
 "
 
-[node name="LidarScanner" type="Node3D" parent="RoverStaticBody" unique_id=1355543662 node_paths=PackedStringArray("display")]
+[node name="LidarScanner" type="Node3D" parent="RoverStaticBody" unique_id=1355543662 node_paths=PackedStringArray("display", "lidar_button")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.51237786)
 script = ExtResource("4_3dxm6")
 scan_active = true
 display = NodePath("../../MonitorScreen/LidarViewport/LidarDisplay")
+lidar_button = NodePath("../../Node3D/LidarButton")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=551556612 node_paths=PackedStringArray("rover", "visual", "pressed_marker")]
-transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.30818778, 12.084532, -4.375778)
+transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.30818778, 12.331766, -4.6010404)
 collision_layer = 2
 script = ExtResource("4_cm0pq")
 rover = NodePath("../RoverStaticBody")
@@ -191,7 +193,7 @@ transform = Transform3D(0.72371733, 0, 0.69009656, 0, 1, 0, -0.69009656, 0, 0.72
 mesh = SubResource("BoxMesh_ayyc1")
 
 [node name="MonitorScreen" type="MeshInstance3D" parent="." unique_id=804967602 groups=["no_psx"]]
-transform = Transform3D(0.99975216, 0, -0.022267118, 0, 1, 0, 0.022267118, 0, 0.99975216, 0.37848485, 12.71262, -4.4245834)
+transform = Transform3D(0.99975216, 0, -0.022267118, 0, 1, 0, 0.022267118, 0, 0.99975216, 0.37848485, 12.997613, -4.68889)
 mesh = SubResource("QuadMesh_0alb6")
 surface_material_override/0 = SubResource("StandardMaterial3D_c4s4q")
 
@@ -219,7 +221,7 @@ shape = SubResource("BoxShape3D_nvbm3")
 mesh = SubResource("BoxMesh_c4s4q")
 
 [node name="BackButton" type="StaticBody3D" parent="." unique_id=138240293 node_paths=PackedStringArray("rover", "visual", "pressed_marker")]
-transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.31674498, 12.084532, -4.146054)
+transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.31674498, 12.301351, -4.3585076)
 collision_layer = 2
 script = ExtResource("9_03owx")
 rover = NodePath("../RoverStaticBody")
@@ -256,7 +258,15 @@ mouse_filter = 2
 [node name="Node" type="Node" parent="." unique_id=2127766353]
 script = ExtResource("12_5vvyt")
 
+[node name="Node3D" parent="." unique_id=694589553 instance=ExtResource("14_c2ibq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5982988, 12.7880945, -3.7771053)
+
+[node name="LidarButton" parent="Node3D" index="1" unique_id=1549510258 node_paths=PackedStringArray("visual")]
+visual = NodePath("MeshInstance3D")
+
 [connection signal="held" from="StaticBody3D" to="RoverStaticBody" method="_on_up_held"]
 [connection signal="released" from="StaticBody3D" to="RoverStaticBody" method="_on_button_released"]
 [connection signal="held" from="BackButton" to="RoverStaticBody" method="_on_down_held"]
 [connection signal="released" from="BackButton" to="RoverStaticBody" method="_on_button_released"]
+
+[editable path="Node3D"]

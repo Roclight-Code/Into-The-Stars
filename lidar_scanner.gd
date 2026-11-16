@@ -13,15 +13,22 @@ extends Node3D
 @export var depth_falloff: float = 0.15       # higher = distance dims dots faster
 @export_range(0.0, 1.0) var angle_shading: float = 0.65  # 0 = ignore surface angle, 1 = strong
 
+@export var lidar_button: Node
+
 var _query := PhysicsRayQueryParameters3D.new()
 
 func _ready() -> void:
 	if rover_body:
-		_query.exclude = [rover_body.get_rid()]  # beams ignore the rover itself
+		_query.exclude = [rover_body.get_rid()]
+	scan_active = false
+	if display:
+		display.clear_dots()
+	if lidar_button:
+		lidar_button.toggled.connect(_on_lidar_toggled)
 
-func toggle_scan() -> void:
-	scan_active = not scan_active
-	if not scan_active and display:
+func _on_lidar_toggled(on: bool) -> void:
+	scan_active = on
+	if not on and display:
 		display.clear_dots()
 
 func _physics_process(_delta: float) -> void:

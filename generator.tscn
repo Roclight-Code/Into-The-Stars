@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://b2a7ykg3cq00b"]
+
+[ext_resource type="Script" uid="uid://cyuah0piuicxg" path="res://generator.gd" id="1_k6sox"]
+[ext_resource type="Script" uid="uid://cu7n3jyl8r2wu" path="res://fill_pivot.gd" id="2_l0m0h"]
+[ext_resource type="Script" uid="uid://buvu5kjh4qk1b" path="res://lidar_button.gd" id="3_v8oxa"]
+[ext_resource type="Script" uid="uid://b1thxj4t608wc" path="res://generator_lever.gd" id="4_l0m0h"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_ayyc1"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_c4s4q"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ayyc1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0alb6"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2ckvu"]
+material = SubResource("StandardMaterial3D_0alb6")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ayyc1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ayyc1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ayyc1"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ayyc1"]
+top_radius = 0.01
+bottom_radius = 0.01
+height = 0.15
+
+[node name="Node3D" type="Node3D" unique_id=694589553]
+script = ExtResource("1_k6sox")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=875963588]
+mesh = SubResource("QuadMesh_ayyc1")
+
+[node name="FillPivot" type="Node3D" parent="MeshInstance3D" unique_id=1120194809 node_paths=PackedStringArray("generator", "fill_pivot", "fill_mesh")]
+transform = Transform3D(1, 0, 0, 0, 0.289221, 0, 0, 0, 1, 0.5, -0.155, 0)
+script = ExtResource("2_l0m0h")
+generator = NodePath("../..")
+fill_pivot = NodePath(".")
+fill_mesh = NodePath("Fill")
+
+[node name="Fill" type="MeshInstance3D" parent="MeshInstance3D/FillPivot" unique_id=608491525]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.01)
+mesh = SubResource("QuadMesh_c4s4q")
+
+[node name="LidarButton" type="StaticBody3D" parent="." unique_id=1549510258 node_paths=PackedStringArray("generator", "visual", "pressed_marker")]
+transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0, 0.8605726)
+collision_layer = 2
+script = ExtResource("3_v8oxa")
+generator = NodePath("..")
+visual = NodePath("../MeshInstance3D")
+pressed_marker = NodePath("Marker3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LidarButton" unique_id=336480533]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+shape = SubResource("CylinderShape3D_ayyc1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LidarButton" unique_id=1879442980]
+unique_name_in_owner = true
+mesh = SubResource("CylinderMesh_2ckvu")
+
+[node name="Marker3D" type="Marker3D" parent="LidarButton" unique_id=1484380334]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9253693, 0)
+
+[node name="GeneratorLever" type="StaticBody3D" parent="." unique_id=753983475 node_paths=PackedStringArray("generator", "visual")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.196502, 0, 0)
+collision_layer = 2
+physics_material_override = SubResource("PhysicsMaterial_ayyc1")
+script = ExtResource("4_l0m0h")
+generator = NodePath("..")
+visual = NodePath("Pivot")
+
+[node name="Base" type="MeshInstance3D" parent="GeneratorLever" unique_id=143758415]
+transform = Transform3D(0.15, 0, 0, 0, 0.02, 0, 0, 0, 0.15, 0, 0, 0)
+mesh = SubResource("BoxMesh_ayyc1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GeneratorLever" unique_id=211682398]
+transform = Transform3D(0.505, 0, 0, 0, 0.505, 0, 0, 0, 0.505, 0, 0, 0)
+shape = SubResource("BoxShape3D_ayyc1")
+
+[node name="Pivot" type="Node3D" parent="GeneratorLever" unique_id=1293609592]
+
+[node name="Handle" type="MeshInstance3D" parent="GeneratorLever/Pivot" unique_id=1938102586]
+transform = Transform3D(0.9999998, 0, 0, 0, 0.9999998, 0, 0, 0, 0.9999998, 0, 0.07959129, 0)
+mesh = SubResource("CylinderMesh_ayyc1")
