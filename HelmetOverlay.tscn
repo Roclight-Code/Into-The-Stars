@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://fe4wpl5521uf"]
+
+[ext_resource type="Script" uid="uid://ubhqixn7of6k" path="res://helmet_overlay.gd" id="1_2grr5"]
+[ext_resource type="Shader" uid="uid://ejpwloppp0lf" path="res://shaders/HelmetOverlay.gdshader" id="1_k56ud"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ayyc1"]
+shader = ExtResource("1_k56ud")
+shader_parameter/frame_color = Color(0.04, 0.04, 0.06, 1)
+shader_parameter/glass_tint = Color(0.4, 0.7, 1, 0.06)
+shader_parameter/frame_size = 0.06
+shader_parameter/corner_radius = 0.18
+shader_parameter/edge_softness = 0.004
+shader_parameter/vignette = 0.35
+
+[node name="HelmetOverlay" type="CanvasLayer" unique_id=573835647]
+script = ExtResource("1_2grr5")
+
+[node name="Visor" type="ColorRect" parent="." unique_id=1895556368]
+material = SubResource("ShaderMaterial_ayyc1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

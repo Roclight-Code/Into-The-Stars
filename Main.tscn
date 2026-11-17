@@ -3,8 +3,10 @@
 [ext_resource type="Script" uid="uid://dx1kuny6ji3ek" path="res://player_movement.gd" id="1_glv2v"]
 [ext_resource type="Script" uid="uid://beqw3x6tsvhm8" path="res://player_interact_raycast.gd" id="2_cm0pq"]
 [ext_resource type="Script" uid="uid://clgnb5oct7l25" path="res://rover_static_body.gd" id="3_cm0pq"]
+[ext_resource type="PackedScene" uid="uid://fe4wpl5521uf" path="res://HelmetOverlay.tscn" id="3_sc1dx"]
 [ext_resource type="Script" uid="uid://b8m0f6rs7uird" path="res://lidar_scanner.gd" id="4_3dxm6"]
 [ext_resource type="Script" uid="uid://bq7jnri3lw4nk" path="res://static_body_3d.gd" id="4_cm0pq"]
+[ext_resource type="Script" uid="uid://ubhqixn7of6k" path="res://helmet_overlay.gd" id="4_kjvhd"]
 [ext_resource type="Script" uid="uid://bgugf3lo84p5p" path="res://control.gd" id="5_fos0i"]
 [ext_resource type="Script" uid="uid://cqt7b8kh7c15" path="res://lidar_display.gd" id="7_lgr22"]
 [ext_resource type="Script" uid="uid://dujfmgcs8dyp0" path="res://seat_script.gd" id="8_trn2v"]
@@ -80,6 +82,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -3, 0, 0, 0)
 target_position = Vector3(0, -0.08, 3)
 collision_mask = 2
 script = ExtResource("2_cm0pq")
+
+[node name="HelmetOverlay" parent="Player/Head/Camera3D" unique_id=573835647 instance=ExtResource("3_sc1dx")]
+script = ExtResource("4_kjvhd")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=196247890]
 visible = false
