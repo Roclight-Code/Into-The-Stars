@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://cx84yy3wfrxlu" path="res://node.gd" id="12_5vvyt"]
 [ext_resource type="Shader" uid="uid://cf77wougvcrki" path="res://shaders/psx_post.gdshader" id="12_c6i3y"]
 [ext_resource type="PackedScene" uid="uid://b2a7ykg3cq00b" path="res://generator.tscn" id="14_c2ibq"]
+[ext_resource type="PackedScene" uid="uid://dk8ls8w17ubpo" path="res://watcher.tscn" id="15_j4qnp"]
 
 [sub_resource type="GDScript" id="GDScript_cm0pq"]
 script/source = "extends Camera3D
@@ -130,7 +131,7 @@ transform = Transform3D(1, 0, 0, 0, 0.46792984, 0.88376564, 0, -0.88376564, 0.46
 shadow_enabled = true
 
 [node name="RoverStaticBody" type="StaticBody3D" parent="." unique_id=356854698]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.19990861, 0)
 script = ExtResource("3_cm0pq")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RoverStaticBody" unique_id=1865148875]
@@ -145,11 +146,12 @@ billboard = 1
 text = "Rover
 "
 
-[node name="LidarScanner" type="Node3D" parent="RoverStaticBody" unique_id=1355543662 node_paths=PackedStringArray("display", "lidar_button")]
+[node name="LidarScanner" type="Node3D" parent="RoverStaticBody" unique_id=1355543662 node_paths=PackedStringArray("display", "rover_body", "lidar_button")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.51237786)
 script = ExtResource("4_3dxm6")
 scan_active = true
 display = NodePath("../../MonitorScreen/LidarViewport/LidarDisplay")
+rover_body = NodePath("..")
 lidar_button = NodePath("../../Node3D/LidarButton")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=551556612 node_paths=PackedStringArray("rover", "visual", "pressed_marker")]
@@ -263,6 +265,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5982988, 12.7880945, -3.777
 
 [node name="LidarButton" parent="Node3D" index="1" unique_id=1549510258 node_paths=PackedStringArray("visual")]
 visual = NodePath("MeshInstance3D")
+
+[node name="Watcher" parent="." unique_id=193177057 instance=ExtResource("15_j4qnp")]
+transform = Transform3D(-0.4, 0, -6.039832e-08, 0, 0.4, 0, 6.039832e-08, 0, -0.4, 17.971432, 0, 18.992065)
 
 [connection signal="held" from="StaticBody3D" to="RoverStaticBody" method="_on_up_held"]
 [connection signal="released" from="StaticBody3D" to="RoverStaticBody" method="_on_button_released"]
