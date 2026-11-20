@@ -5,11 +5,10 @@
 [ext_resource type="Script" uid="uid://clgnb5oct7l25" path="res://rover_static_body.gd" id="3_cm0pq"]
 [ext_resource type="PackedScene" uid="uid://fe4wpl5521uf" path="res://HelmetOverlay.tscn" id="3_sc1dx"]
 [ext_resource type="Script" uid="uid://b8m0f6rs7uird" path="res://lidar_scanner.gd" id="4_3dxm6"]
-[ext_resource type="Script" uid="uid://bq7jnri3lw4nk" path="res://static_body_3d.gd" id="4_cm0pq"]
-[ext_resource type="Script" uid="uid://bgugf3lo84p5p" path="res://control.gd" id="5_fos0i"]
+[ext_resource type="Script" uid="uid://bq7jnri3lw4nk" path="res://hold_button.gd" id="4_cm0pq"]
+[ext_resource type="Script" uid="uid://bgugf3lo84p5p" path="res://SonarMap.gd" id="5_fos0i"]
 [ext_resource type="Script" uid="uid://cqt7b8kh7c15" path="res://lidar_display.gd" id="7_lgr22"]
 [ext_resource type="Script" uid="uid://dujfmgcs8dyp0" path="res://seat_script.gd" id="8_trn2v"]
-[ext_resource type="Script" uid="uid://bur1a3iltros8" path="res://back_button.gd" id="9_03owx"]
 [ext_resource type="PackedScene" uid="uid://b00okfs1jm7r5" path="res://steering_crank.tscn" id="10_wkp8b"]
 [ext_resource type="Script" uid="uid://fy3ut1kx1xkk" path="res://psx_layer.gd" id="11_20pc6"]
 [ext_resource type="Script" uid="uid://cx84yy3wfrxlu" path="res://node.gd" id="12_5vvyt"]
@@ -85,13 +84,11 @@ script = ExtResource("2_cm0pq")
 [node name="HelmetOverlay" parent="Player/Head/Camera3D" unique_id=573835647 instance=ExtResource("3_sc1dx")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=196247890]
-visible = false
 shape = SubResource("SphereShape3D_ayyc1")
 
 [node name="HUD" type="CanvasLayer" parent="Player" unique_id=1522113834]
 
 [node name="TextureRect" type="TextureRect" parent="Player/HUD" unique_id=2132313144]
-visible = false
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
@@ -116,8 +113,6 @@ offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-
-[node name="body_collision" type="CollisionShape3D" parent="Player" unique_id=1862291464]
 
 [node name="PlayerPlatformStatic" type="StaticBody3D" parent="." unique_id=627813432]
 
@@ -163,7 +158,6 @@ collision_layer = 2
 script = ExtResource("4_cm0pq")
 rover = NodePath("../RoverStaticBody")
 visual = NodePath("MeshInstance3D")
-press_depth = 0.5
 pressed_marker = NodePath("Marker3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1230208797]
@@ -177,7 +171,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.0575562, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1830825600]
 
-[node name="Control" type="Control" parent="CanvasLayer" unique_id=689648934 node_paths=PackedStringArray("target")]
+[node name="SonarMap" type="Control" parent="CanvasLayer" unique_id=689648934 node_paths=PackedStringArray("target")]
 custom_minimum_size = Vector2(260, 260)
 layout_mode = 3
 anchors_preset = 0
@@ -228,10 +222,9 @@ mesh = SubResource("BoxMesh_c4s4q")
 [node name="BackButton" type="StaticBody3D" parent="." unique_id=138240293 node_paths=PackedStringArray("rover", "visual", "pressed_marker")]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.31674498, 12.301351, -4.3585076)
 collision_layer = 2
-script = ExtResource("9_03owx")
+script = ExtResource("4_cm0pq")
 rover = NodePath("../RoverStaticBody")
 visual = NodePath("MeshInstance3D")
-press_depth = 0.5
 pressed_marker = NodePath("Marker3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BackButton" unique_id=1663643626]
