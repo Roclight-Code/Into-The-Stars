@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cfqypb3aafthb"]
 
 [ext_resource type="Script" uid="uid://dx1kuny6ji3ek" path="res://player_movement.gd" id="1_glv2v"]
-[ext_resource type="Script" uid="uid://beqw3x6tsvhm8" path="res://player_interact_raycast.gd" id="2_cm0pq"]
 [ext_resource type="Script" uid="uid://clgnb5oct7l25" path="res://rover_static_body.gd" id="3_cm0pq"]
 [ext_resource type="PackedScene" uid="uid://fe4wpl5521uf" path="res://HelmetOverlay.tscn" id="3_sc1dx"]
 [ext_resource type="Script" uid="uid://b8m0f6rs7uird" path="res://lidar_scanner.gd" id="4_3dxm6"]
@@ -15,10 +14,6 @@
 [ext_resource type="Shader" uid="uid://cf77wougvcrki" path="res://shaders/psx_post.gdshader" id="12_c6i3y"]
 [ext_resource type="PackedScene" uid="uid://b2a7ykg3cq00b" path="res://generator.tscn" id="14_c2ibq"]
 [ext_resource type="PackedScene" uid="uid://dk8ls8w17ubpo" path="res://watcher.tscn" id="15_j4qnp"]
-
-[sub_resource type="GDScript" id="GDScript_cm0pq"]
-script/source = "extends Camera3D
-"
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ayyc1"]
 
@@ -77,13 +72,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.044, 1.6, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Player/Head" unique_id=185801676]
 current = true
-script = SubResource("GDScript_cm0pq")
 
 [node name="InteractRay" type="RayCast3D" parent="Player/Head/Camera3D" unique_id=381948238]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -3, 0, 0, 0)
 target_position = Vector3(0, -0.08, 3)
 collision_mask = 2
-script = ExtResource("2_cm0pq")
 
 [node name="HelmetOverlay" parent="Player/Head/Camera3D" unique_id=573835647 instance=ExtResource("3_sc1dx")]
 
@@ -91,11 +84,6 @@ script = ExtResource("2_cm0pq")
 shape = SubResource("SphereShape3D_ayyc1")
 
 [node name="HUD" type="CanvasLayer" parent="Player" unique_id=1522113834]
-
-[node name="TextureRect" type="TextureRect" parent="Player/HUD" unique_id=2132313144]
-offset_right = 40.0
-offset_bottom = 40.0
-mouse_filter = 2
 
 [node name="PromptLabel" type="Label" parent="Player/HUD" unique_id=1460925558]
 offset_top = 68.0
@@ -132,9 +120,10 @@ mesh = SubResource("BoxMesh_oswh7")
 transform = Transform3D(1, 0, 0, 0, 0.46792984, 0.88376564, 0, -0.88376564, 0.46792984, 0, 25.909355, 0)
 shadow_enabled = true
 
-[node name="RoverStaticBody" type="StaticBody3D" parent="." unique_id=356854698]
+[node name="RoverStaticBody" type="StaticBody3D" parent="." unique_id=356854698 node_paths=PackedStringArray("generator")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.19990861, 0)
 script = ExtResource("3_cm0pq")
+generator = NodePath("../Node3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RoverStaticBody" unique_id=1865148875]
 shape = SubResource("BoxShape3D_a368p")

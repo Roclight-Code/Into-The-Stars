@@ -39,7 +39,7 @@ func _process(delta: float) -> void:
 # --- called by other scripts ---
 
 func can_use_rover() -> bool:        # movement, crank, etc.
-	return is_on
+	return is_on and not locked
 
 func can_use_lidar() -> bool:
 	return is_on and not locked

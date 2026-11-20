@@ -24,8 +24,6 @@ var sitting := false
 var current_seat: Node3D = null
 var _transitioning := false
 
-var held_button: Node = null   # top of the script, with your other variables
-
 var controls_locked := false
 
 func _ready() -> void:
