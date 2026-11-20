@@ -5,7 +5,6 @@ extends Node3D
 @export var grid_height: int = 36    # beams down
 @export var fov_vertical: float = 60.0
 @export var max_range: float = 30.0
-@export var scan_active: bool = false
 
 @export var display: Control
 @export var rover_body: CollisionObject3D
@@ -13,26 +12,24 @@ extends Node3D
 @export var depth_falloff: float = 0.15       # higher = distance dims dots faster
 @export_range(0.0, 1.0) var angle_shading: float = 0.65  # 0 = ignore surface angle, 1 = strong
 
-@export var lidar_button: Node
+@export var generator: Node3D
 
 var _query := PhysicsRayQueryParameters3D.new()
 
 func _ready() -> void:
 	if rover_body:
 		_query.exclude = [rover_body.get_rid()]
-	scan_active = false
 	if display:
 		display.clear_dots()
-	if lidar_button:
-		lidar_button.toggled.connect(_on_lidar_toggled)
+	if generator:
+		generator.lidar_changed.connect(_on_lidar_changed)
 
-func _on_lidar_toggled(on: bool) -> void:
-	scan_active = on
+func _on_lidar_changed(on: bool) -> void:
 	if not on and display:
 		display.clear_dots()
 
 func _physics_process(_delta: float) -> void:
-	if not scan_active or display == null:
+	if display == null or generator == null or not generator.lidar_active:
 		return
 
 	var space := get_world_3d().direct_space_state

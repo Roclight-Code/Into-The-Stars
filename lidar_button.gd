@@ -1,38 +1,26 @@
 extends Pressable
 
-signal toggled(is_on: bool)
-
 @export var generator: Node3D
 @export var rover: Node3D           # only needed if the click makes noise
 @export var makes_noise := false
 
-var is_on := false
-
 func _on_ready() -> void:
 	if generator:
-		generator.lidar_forced_off.connect(_on_forced_off)
+		generator.lidar_changed.connect(_on_lidar_changed)
 
 func get_prompt() -> String:
-	return "Turn lidar off" if is_on else "Turn lidar on"
+	return "Turn lidar off" if generator.lidar_active else "Turn lidar on"
 
 func _on_pressed() -> void:
-	var want_on := not is_on
-	var allowed: bool = generator.set_lidar(want_on)
-
-	if want_on and not allowed:
-		_blip()
+	var want_on: bool = not generator.lidar_active
+	if not generator.set_lidar(want_on) and want_on:
+		_blip()          # refused: no power or locked out
 		return
-
-	is_on = want_on
-	_animate(is_on)
 	if makes_noise and rover:
 		NoiseBus.make_noise(rover.global_position, NoiseBus.Level.CLOSE)
-	toggled.emit(is_on)
 
-func _on_forced_off() -> void:
-	is_on = false
-	_animate(false)
-	toggled.emit(false)
+func _on_lidar_changed(on: bool) -> void:
+	_animate(on)         # also fires when the generator forces it off
 
 func _blip() -> void:
 	if not visual:

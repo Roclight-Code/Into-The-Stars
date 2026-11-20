@@ -60,7 +60,11 @@ shader_parameter/target_res = Vector2(320, 240)
 shader_parameter/color_levels = 32.0
 shader_parameter/dither_strength = 0.6
 
-[node name="Main (Node3D)" type="Node3D" unique_id=1445796514]
+[node name="Main (Node3D)" type="Node3D" unique_id=1445796514 node_paths=PackedStringArray("display", "rover_body", "generator")]
+script = ExtResource("4_3dxm6")
+display = NodePath("MonitorScreen/LidarViewport/LidarDisplay")
+rover_body = NodePath("RoverStaticBody")
+generator = NodePath("Node3D")
 
 [node name="Player" type="CharacterBody3D" parent="." unique_id=266951257]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.044044495, 11.534232, 0)
@@ -144,13 +148,12 @@ billboard = 1
 text = "Rover
 "
 
-[node name="LidarScanner" type="Node3D" parent="RoverStaticBody" unique_id=1355543662 node_paths=PackedStringArray("display", "rover_body", "lidar_button")]
+[node name="LidarScanner" type="Node3D" parent="RoverStaticBody" unique_id=1355543662 node_paths=PackedStringArray("display", "rover_body", "generator")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.51237786)
 script = ExtResource("4_3dxm6")
-scan_active = true
 display = NodePath("../../MonitorScreen/LidarViewport/LidarDisplay")
 rover_body = NodePath("..")
-lidar_button = NodePath("../../Node3D/LidarButton")
+generator = NodePath("../../Node3D")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=551556612 node_paths=PackedStringArray("rover", "visual", "pressed_marker")]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.30818778, 12.331766, -4.6010404)
@@ -259,7 +262,8 @@ script = ExtResource("12_5vvyt")
 [node name="Node3D" parent="." unique_id=694589553 instance=ExtResource("14_c2ibq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5982988, 12.7880945, -3.7771053)
 
-[node name="LidarButton" parent="Node3D" index="1" unique_id=1549510258 node_paths=PackedStringArray("visual")]
+[node name="LidarButton" parent="Node3D" index="1" unique_id=1549510258 node_paths=PackedStringArray("rover", "visual")]
+rover = NodePath("../../RoverStaticBody")
 visual = NodePath("MeshInstance3D")
 
 [node name="Watcher" parent="." unique_id=193177057 instance=ExtResource("15_j4qnp")]

@@ -3,7 +3,7 @@ extends Control
 @export var target: Node3D
 @export_flags_3d_physics var scan_mask := 3
 @export var enemy_group := "enemy"
-@export var ring_distances: Array[float] = [3.0, 8.0, 15.0]
+var ring_distances: Array[float] = []
 @export var ring_pixels: Array[float] = [45.0, 80.0, 115.0]
 @export var scan_interval := 0.1
 
@@ -42,6 +42,7 @@ var scan_origin := Vector3.ZERO
 var _known := {}   # Vector2i cell -> true; permanent
 
 func _ready() -> void:
+	ring_distances = NoiseBus.ring_distances()
 	_cells.resize(DIRS)
 	_cells.fill(null)
 	_ring_glow.resize(ring_pixels.size())

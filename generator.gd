@@ -1,5 +1,6 @@
 extends Node3D
 
+signal lidar_changed(is_on: bool)
 signal energy_changed(value: float)
 signal power_changed(is_on: bool)
 signal lockout_changed(is_locked: bool)
@@ -46,7 +47,9 @@ func can_use_lidar() -> bool:
 func set_lidar(on: bool) -> bool:    # returns whether the lidar is now on
 	if on and not can_use_lidar():
 		return false
-	lidar_active = on
+	if lidar_active != on:
+		lidar_active = on
+		lidar_changed.emit(lidar_active)
 	return lidar_active
 
 func toggle_power() -> void:         # hook your switch to this
@@ -64,4 +67,5 @@ func _set_locked(v: bool) -> void:
 func _force_lidar_off() -> void:
 	if lidar_active:
 		lidar_active = false
+		lidar_changed.emit(false)
 		lidar_forced_off.emit()
