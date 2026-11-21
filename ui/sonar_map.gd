@@ -108,9 +108,10 @@ func _scan() -> void:
 		var ring := 0
 		while ring < ring_distances.size() - 1 and d > ring_distances[ring]:
 			ring += 1
-		_cells[i] = {"ring": ring, "enemy": hit.collider.is_in_group(enemy_group)}
+		_cells[i] = {"ring": ring, "enemy": false}
 		if ring == 0:
 			alert = true
+	_mark_enemies(origin, max_d)
 
 func _draw() -> void:
 	var c := size / 2.0
@@ -223,3 +224,22 @@ func _on_noise_made(pos: Vector3, level: int) -> void:
 		if pos.distance_to(target.global_position) > NoiseBus.RANGES[level]:
 			return
 	_ring_glow[ring] = noise_duration
+
+func _mark_enemies(origin: Vector3, max_d: float) -> void:
+	for e in get_tree().get_nodes_in_group(enemy_group):
+		if not e is Node3D:
+			continue
+		var rel: Vector3 = e.global_position - origin
+		rel.y = 0.0
+		var d := rel.length()
+		if d > max_d:
+			continue
+		# Same convention as the rays: direction = (sin a, 0, -cos a)
+		var a := atan2(rel.x, -rel.z)
+		var i := posmod(roundi(a / TAU * DIRS), DIRS)
+		var ring := 0
+		while ring < ring_distances.size() - 1 and d > ring_distances[ring]:
+			ring += 1
+		_cells[i] = {"ring": ring, "enemy": true}
+		if ring == 0:
+			alert = true

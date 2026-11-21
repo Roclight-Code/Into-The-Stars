@@ -76,11 +76,12 @@ func _process(delta: float) -> void:
 
 	_update_tier(speed)
 
-	var turning: bool = tier > 0 and rover != null and rover.has_power()
+	var wants_turn: bool = tier > 0 and rover != null and rover.has_power()
+	var turned := false
+	if wants_turn:
+		turned = rover.turn(-deg_to_rad(turn_rates[tier]) * signf(net) * delta)
 	if rover:
-		rover.set_steering(turning)
-	if turning:
-		rover.rotate_y(-deg_to_rad(turn_rates[tier]) * signf(net) * delta)
+		rover.set_steering(turned)
 
 func _update_tier(speed: float) -> void:
 	var t := 0

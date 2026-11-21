@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://7bccquxytsr1"]
 
-[ext_resource type="Script" uid="uid://clgnb5oct7l25" path="res://rover/rover_static_body.gd" id="1_skcjw"]
+[ext_resource type="Script" uid="uid://clgnb5oct7l25" path="res://rover/rover.gd" id="1_skcjw"]
 [ext_resource type="Script" uid="uid://b8m0f6rs7uird" path="res://rover/lidar_scanner.gd" id="2_6g1ju"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a368p"]
@@ -11,16 +11,17 @@ albedo_color = Color(1, 0, 1, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_chw0c"]
 material = SubResource("StandardMaterial3D_ayyc1")
 
-[node name="RoverStaticBody" type="StaticBody3D" unique_id=1645621954]
+[node name="RoverStaticBody" type="CharacterBody3D" unique_id=138945187]
+collision_layer = 16
+collision_mask = 5
 script = ExtResource("1_skcjw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1392590754]
 shape = SubResource("BoxShape3D_a368p")
 
-[node name="LidarScanner" type="Node3D" parent="." unique_id=1168392642 node_paths=PackedStringArray("rover_body")]
+[node name="LidarScanner" type="Node3D" parent="." unique_id=1168392642]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.51237786)
 script = ExtResource("2_6g1ju")
-rover_body = NodePath("..")
 
 [node name="Model" type="Node3D" parent="." unique_id=154702340]
 

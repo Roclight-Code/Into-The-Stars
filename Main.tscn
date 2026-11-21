@@ -93,7 +93,7 @@ mesh = SubResource("CylinderMesh_ayyc1")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1830825600]
 
 [node name="SonarMap" parent="CanvasLayer" unique_id=603789068 instance=ExtResource("5_c2ibq")]
-scan_mask = 5
+scan_mask = 1
 
 [node name="TestWall" type="StaticBody3D" parent="." unique_id=1592318661]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.89424, 0, -33.253838)
