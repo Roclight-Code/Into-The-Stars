@@ -19,9 +19,13 @@ var _query := PhysicsRayQueryParameters3D.new()
 func _ready() -> void:
 	if rover_body:
 		_query.exclude = [rover_body.get_rid()]
+
+func setup(gen: Node3D, disp: Control) -> void:
+	generator = gen
+	display = disp
 	if display:
 		display.clear_dots()
-	if generator:
+	if generator and not generator.lidar_changed.is_connected(_on_lidar_changed):
 		generator.lidar_changed.connect(_on_lidar_changed)
 
 func _on_lidar_changed(on: bool) -> void:

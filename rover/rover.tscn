@@ -5,28 +5,24 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a368p"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_chw0c"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ayyc1"]
+albedo_color = Color(1, 0, 1, 1)
 
-[node name="RoverStaticBody" type="StaticBody3D" unique_id=1645621954 node_paths=PackedStringArray("generator", "lidar_display")]
+[sub_resource type="BoxMesh" id="BoxMesh_chw0c"]
+material = SubResource("StandardMaterial3D_ayyc1")
+
+[node name="RoverStaticBody" type="StaticBody3D" unique_id=1645621954]
 script = ExtResource("1_skcjw")
-generator = NodePath("")
-lidar_display = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1392590754]
 shape = SubResource("BoxShape3D_a368p")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1704804125]
-mesh = SubResource("BoxMesh_chw0c")
-
-[node name="Label3D" type="Label3D" parent="." unique_id=123392251]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7705515, 0)
-billboard = 1
-text = "Rover
-"
-
-[node name="LidarScanner" type="Node3D" parent="." unique_id=1168392642 node_paths=PackedStringArray("display", "rover_body", "generator")]
+[node name="LidarScanner" type="Node3D" parent="." unique_id=1168392642 node_paths=PackedStringArray("rover_body")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.51237786)
 script = ExtResource("2_6g1ju")
-display = NodePath("")
 rover_body = NodePath("..")
-generator = NodePath("")
+
+[node name="Model" type="Node3D" parent="." unique_id=154702340]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model" unique_id=1704804125]
+mesh = SubResource("BoxMesh_chw0c")

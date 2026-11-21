@@ -2,7 +2,8 @@ class_name Pressable
 extends StaticBody3D
 
 @export var visual: Node3D
-@export var pressed_marker: Node3D
+## How far the visual moves when pressed, in this button's local space.
+@export var press_offset := Vector3(0.0, 0.0, 0.02)
 @export var press_time := 0.06
 
 var _rest_pos: Vector3
@@ -13,9 +14,7 @@ var _latched := false
 func _ready() -> void:
 	if visual:
 		_rest_pos = visual.position
-		_pressed_pos = _rest_pos
-		if pressed_marker:
-			_pressed_pos = (visual.get_parent() as Node3D).to_local(pressed_marker.global_position)
+		_pressed_pos = _rest_pos + press_offset
 	_on_ready()
 
 # Subclasses override these instead of _ready:

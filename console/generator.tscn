@@ -45,24 +45,23 @@ fill_mesh = NodePath("Fill")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.01)
 mesh = SubResource("QuadMesh_c4s4q")
 
-[node name="LidarButton" type="StaticBody3D" parent="." unique_id=1549510258 node_paths=PackedStringArray("generator", "visual", "pressed_marker")]
+[node name="LidarButton" type="StaticBody3D" parent="." unique_id=1549510258 node_paths=PackedStringArray("generator", "visual")]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0, 0.8605726)
 collision_layer = 2
 script = ExtResource("3_v8oxa")
 generator = NodePath("..")
-visual = NodePath("../MeshInstance3D")
-pressed_marker = NodePath("Marker3D")
+visual = NodePath("Model")
+press_offset = Vector3(0, -1, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LidarButton" unique_id=336480533]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
 shape = SubResource("CylinderShape3D_ayyc1")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="LidarButton" unique_id=1879442980]
+[node name="Model" type="Node3D" parent="LidarButton" unique_id=1328211017]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LidarButton/Model" unique_id=1879442980]
 unique_name_in_owner = true
 mesh = SubResource("CylinderMesh_2ckvu")
-
-[node name="Marker3D" type="Marker3D" parent="LidarButton" unique_id=1484380334]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9253693, 0)
 
 [node name="GeneratorLever" type="StaticBody3D" parent="." unique_id=753983475 node_paths=PackedStringArray("generator", "visual")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.196502, 0, 0)

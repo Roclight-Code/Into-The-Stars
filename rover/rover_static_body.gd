@@ -2,18 +2,15 @@ extends StaticBody3D
 
 @export var move_speed := 3.0
 @export var turn_speed := 1.5   # radians per second
-@export var generator: Node3D
-@export var lidar_display: Control
 
-# The scanner lives inside this scene, but the display and generator live outside it,
-# so they're handed in here, before the scanner's own _ready runs.
-func _enter_tree() -> void:
-	var scanner: Node = $LidarScanner
-	scanner.generator = generator
-	scanner.display = lidar_display
+var generator: Node3D
 
 # -1, 0, or 1
 var drive_input := 0.0
+
+func connect_console(gen: Node3D, display: Control) -> void:
+	generator = gen
+	$LidarScanner.setup(gen, display)
 
 func has_power() -> bool:
 	return generator == null or generator.can_use_rover()
