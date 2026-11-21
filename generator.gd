@@ -11,18 +11,31 @@ signal lidar_forced_off
 @export var idle_recharge := 1.0        # % per second while generator is on, lidar off
 @export var shutdown_recharge := 5.0    # % per second while generator is switched off
 @export var unlock_threshold := 40.0    # must reach this after being fully drained
+@export var drive_drain := 2.0          # % per second while the rover is driving
+@export var steer_drain := 2.0          # % per second while the crank is turning the rover
 
 var energy := 100.0
 var is_on := true
 var locked := false
 var lidar_active := false
+var driving := false
+var steering := false
 
 func _process(delta: float) -> void:
+	var drain := 0.0
+	if is_on:
+		if lidar_active:
+			drain += lidar_drain
+		if driving:
+			drain += drive_drain
+		if steering:
+			drain += steer_drain
+
 	var rate := idle_recharge
 	if not is_on:
 		rate = shutdown_recharge
-	elif lidar_active:
-		rate = -lidar_drain
+	elif drain > 0.0:
+		rate = -drain
 
 	var old := energy
 	energy = clampf(energy + rate * delta, 0.0, max_energy)

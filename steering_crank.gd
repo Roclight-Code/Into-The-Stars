@@ -76,8 +76,10 @@ func _process(delta: float) -> void:
 
 	_update_tier(speed)
 
-	# Rover turns only while a tier is active; it stops as soon as the samples age out
-	if tier > 0 and rover and rover.has_power():
+	var turning: bool = tier > 0 and rover != null and rover.has_power()
+	if rover:
+		rover.set_steering(turning)
+	if turning:
 		rover.rotate_y(-deg_to_rad(turn_rates[tier]) * signf(net) * delta)
 
 func _update_tier(speed: float) -> void:
