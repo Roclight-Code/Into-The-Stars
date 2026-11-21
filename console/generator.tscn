@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://b2a7ykg3cq00b"]
 
-[ext_resource type="Script" uid="uid://cyuah0piuicxg" path="res://generator.gd" id="1_k6sox"]
-[ext_resource type="Script" uid="uid://cu7n3jyl8r2wu" path="res://fill_pivot.gd" id="2_l0m0h"]
-[ext_resource type="Script" uid="uid://buvu5kjh4qk1b" path="res://lidar_button.gd" id="3_v8oxa"]
-[ext_resource type="Script" uid="uid://b1thxj4t608wc" path="res://generator_lever.gd" id="4_l0m0h"]
+[ext_resource type="Script" uid="uid://cyuah0piuicxg" path="res://console/generator.gd" id="1_k6sox"]
+[ext_resource type="Script" uid="uid://cu7n3jyl8r2wu" path="res://console/fill_pivot.gd" id="2_l0m0h"]
+[ext_resource type="Script" uid="uid://buvu5kjh4qk1b" path="res://console/lidar_button.gd" id="3_v8oxa"]
+[ext_resource type="Script" uid="uid://b1thxj4t608wc" path="res://console/generator_lever.gd" id="4_bcy75"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_ayyc1"]
 
@@ -68,7 +68,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9253693, 0)
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.196502, 0, 0)
 collision_layer = 2
 physics_material_override = SubResource("PhysicsMaterial_ayyc1")
-script = ExtResource("4_l0m0h")
+script = ExtResource("4_bcy75")
 generator = NodePath("..")
 visual = NodePath("Pivot")
 

@@ -1,30 +1,23 @@
 [gd_scene format=3 uid="uid://cfqypb3aafthb"]
 
-[ext_resource type="Script" uid="uid://dx1kuny6ji3ek" path="res://player_movement.gd" id="1_glv2v"]
-[ext_resource type="Script" uid="uid://clgnb5oct7l25" path="res://rover_static_body.gd" id="3_cm0pq"]
-[ext_resource type="PackedScene" uid="uid://fe4wpl5521uf" path="res://HelmetOverlay.tscn" id="3_sc1dx"]
-[ext_resource type="Script" uid="uid://b8m0f6rs7uird" path="res://lidar_scanner.gd" id="4_3dxm6"]
-[ext_resource type="Script" uid="uid://bq7jnri3lw4nk" path="res://hold_button.gd" id="4_cm0pq"]
-[ext_resource type="Script" uid="uid://bgugf3lo84p5p" path="res://SonarMap.gd" id="5_fos0i"]
-[ext_resource type="Script" uid="uid://cqt7b8kh7c15" path="res://lidar_display.gd" id="7_lgr22"]
-[ext_resource type="Script" uid="uid://dujfmgcs8dyp0" path="res://seat_script.gd" id="8_trn2v"]
-[ext_resource type="PackedScene" uid="uid://b00okfs1jm7r5" path="res://steering_crank.tscn" id="10_wkp8b"]
-[ext_resource type="Script" uid="uid://fy3ut1kx1xkk" path="res://psx_layer.gd" id="11_20pc6"]
+[ext_resource type="PackedScene" uid="uid://7othgpk3i41r" path="res://player/player.tscn" id="2_c6i3y"]
+[ext_resource type="PackedScene" uid="uid://7bccquxytsr1" path="res://rover/rover.tscn" id="3_c6i3y"]
+[ext_resource type="Script" uid="uid://b8m0f6rs7uird" path="res://rover/lidar_scanner.gd" id="4_3dxm6"]
+[ext_resource type="Script" uid="uid://bq7jnri3lw4nk" path="res://console/hold_button.gd" id="4_cm0pq"]
+[ext_resource type="Script" uid="uid://bgugf3lo84p5p" path="res://ui/sonar_map.gd" id="5_fos0i"]
+[ext_resource type="Script" uid="uid://cqt7b8kh7c15" path="res://rover/lidar_display.gd" id="7_lgr22"]
+[ext_resource type="Script" uid="uid://dujfmgcs8dyp0" path="res://console/seat_script.gd" id="8_trn2v"]
+[ext_resource type="PackedScene" uid="uid://b00okfs1jm7r5" path="res://console/steering_crank.tscn" id="10_wkp8b"]
+[ext_resource type="Script" uid="uid://fy3ut1kx1xkk" path="res://ui/psx_layer.gd" id="11_20pc6"]
 [ext_resource type="Script" uid="uid://cx84yy3wfrxlu" path="res://node.gd" id="12_5vvyt"]
 [ext_resource type="Shader" uid="uid://cf77wougvcrki" path="res://shaders/psx_post.gdshader" id="12_c6i3y"]
-[ext_resource type="PackedScene" uid="uid://b2a7ykg3cq00b" path="res://generator.tscn" id="14_c2ibq"]
+[ext_resource type="PackedScene" uid="uid://b2a7ykg3cq00b" path="res://console/generator.tscn" id="14_c2ibq"]
 [ext_resource type="PackedScene" uid="uid://dk8ls8w17ubpo" path="res://watcher.tscn" id="15_j4qnp"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_ayyc1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4s4q"]
 size = Vector3(1, 0.5, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_oswh7"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_a368p"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_chw0c"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_0alb6"]
 
@@ -55,56 +48,13 @@ shader_parameter/target_res = Vector2(320, 240)
 shader_parameter/color_levels = 32.0
 shader_parameter/dither_strength = 0.6
 
-[node name="Main (Node3D)" type="Node3D" unique_id=1445796514 node_paths=PackedStringArray("display", "rover_body", "generator")]
+[node name="Main (Node3D)" type="Node3D" unique_id=1445796514 node_paths=PackedStringArray("display", "generator")]
 script = ExtResource("4_3dxm6")
 display = NodePath("MonitorScreen/LidarViewport/LidarDisplay")
-rover_body = NodePath("RoverStaticBody")
-generator = NodePath("Node3D")
+generator = NodePath("Generator")
 
-[node name="Player" type="CharacterBody3D" parent="." unique_id=266951257]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.044044495, 11.534232, 0)
-disable_mode = 2
-floor_stop_on_slope = false
-script = ExtResource("1_glv2v")
-
-[node name="Head" type="Node3D" parent="Player" unique_id=576608448]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.044, 1.6, 0)
-
-[node name="Camera3D" type="Camera3D" parent="Player/Head" unique_id=185801676]
-current = true
-
-[node name="InteractRay" type="RayCast3D" parent="Player/Head/Camera3D" unique_id=381948238]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -3, 0, 0, 0)
-target_position = Vector3(0, -0.08, 3)
-collision_mask = 2
-
-[node name="HelmetOverlay" parent="Player/Head/Camera3D" unique_id=573835647 instance=ExtResource("3_sc1dx")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=196247890]
-shape = SubResource("SphereShape3D_ayyc1")
-
-[node name="HUD" type="CanvasLayer" parent="Player" unique_id=1522113834]
-
-[node name="PromptLabel" type="Label" parent="Player/HUD" unique_id=1460925558]
-offset_top = 68.0
-offset_right = 40.0
-offset_bottom = 91.0
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Reticle" type="ColorRect" parent="Player/HUD" unique_id=1468372667]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -3.0
-offset_top = -3.0
-offset_right = 3.0
-offset_bottom = 3.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+[node name="Player" parent="." unique_id=1931699106 instance=ExtResource("2_c6i3y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.044044495, 13.517414, 0)
 
 [node name="PlayerPlatformStatic" type="StaticBody3D" parent="." unique_id=627813432]
 
@@ -120,29 +70,10 @@ mesh = SubResource("BoxMesh_oswh7")
 transform = Transform3D(1, 0, 0, 0, 0.46792984, 0.88376564, 0, -0.88376564, 0.46792984, 0, 25.909355, 0)
 shadow_enabled = true
 
-[node name="RoverStaticBody" type="StaticBody3D" parent="." unique_id=356854698 node_paths=PackedStringArray("generator")]
+[node name="RoverStaticBody" parent="." unique_id=1645621954 node_paths=PackedStringArray("generator", "lidar_display") instance=ExtResource("3_c6i3y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0.19990861, 0)
-script = ExtResource("3_cm0pq")
-generator = NodePath("../Node3D")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RoverStaticBody" unique_id=1865148875]
-shape = SubResource("BoxShape3D_a368p")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RoverStaticBody" unique_id=941957612]
-mesh = SubResource("BoxMesh_chw0c")
-
-[node name="Label3D" type="Label3D" parent="RoverStaticBody" unique_id=735782258]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7705515, 0)
-billboard = 1
-text = "Rover
-"
-
-[node name="LidarScanner" type="Node3D" parent="RoverStaticBody" unique_id=1355543662 node_paths=PackedStringArray("display", "rover_body", "generator")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.51237786)
-script = ExtResource("4_3dxm6")
-display = NodePath("../../MonitorScreen/LidarViewport/LidarDisplay")
-rover_body = NodePath("..")
-generator = NodePath("../../Node3D")
+generator = NodePath("../Generator")
+lidar_display = NodePath("../MonitorScreen/LidarViewport/LidarDisplay")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=551556612 node_paths=PackedStringArray("rover", "visual", "pressed_marker")]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0.30818778, 12.331766, -4.6010404)
@@ -248,10 +179,10 @@ mouse_filter = 2
 [node name="Node" type="Node" parent="." unique_id=2127766353]
 script = ExtResource("12_5vvyt")
 
-[node name="Node3D" parent="." unique_id=694589553 instance=ExtResource("14_c2ibq")]
+[node name="Generator" parent="." unique_id=694589553 instance=ExtResource("14_c2ibq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5982988, 12.7880945, -3.7771053)
 
-[node name="LidarButton" parent="Node3D" index="1" unique_id=1549510258 node_paths=PackedStringArray("rover", "visual")]
+[node name="LidarButton" parent="Generator" index="1" unique_id=1549510258 node_paths=PackedStringArray("rover", "visual")]
 rover = NodePath("../../RoverStaticBody")
 visual = NodePath("MeshInstance3D")
 
@@ -263,4 +194,5 @@ transform = Transform3D(-0.4, 0, -6.039832e-08, 0, 0.4, 0, 6.039832e-08, 0, -0.4
 [connection signal="held" from="BackButton" to="RoverStaticBody" method="_on_down_held"]
 [connection signal="released" from="BackButton" to="RoverStaticBody" method="_on_button_released"]
 
-[editable path="Node3D"]
+[editable path="Player"]
+[editable path="Generator"]

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://fe4wpl5521uf"]
 
-[ext_resource type="Script" uid="uid://ubhqixn7of6k" path="res://helmet_overlay.gd" id="1_2grr5"]
+[ext_resource type="Script" uid="uid://ubhqixn7of6k" path="res://player/helmet_overlay.gd" id="1_2grr5"]
 [ext_resource type="Shader" uid="uid://ejpwloppp0lf" path="res://shaders/HelmetOverlay.gdshader" id="1_k56ud"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ayyc1"]
