@@ -13,28 +13,51 @@ extends Node3D
 @export_range(0.0, 1.0) var angle_shading: float = 0.65  # 0 = ignore surface angle, 1 = strong
 
 @export var generator: Node3D
+@export_flags_3d_physics var scan_mask := 5   # World + Enemies
+
+@export_group("Performance")
+## Rays fired per second. The scan rate follows from this and the grid size
+## (64 x 36 = 2304 rays per scan, so 35000 is about 15 scans per second).
+@export_range(5000, 140000, 1000) var rays_per_second := 35000
+
+const _PRESETS := [140000, 70000, 35000, 17000]
+var _preset := 2
+
+var _accum := 0.0
 
 var _query := PhysicsRayQueryParameters3D.new()
+
+var _showing := false
 
 func _ready() -> void:
 	if rover_body:
 		_query.exclude = [rover_body.get_rid()]
+		_query.collision_mask = scan_mask
 
 func setup(gen: Node3D, disp: Control) -> void:
 	generator = gen
 	display = disp
 	if display:
+		display.set_grid(grid_width, grid_height)
 		display.clear_dots()
-	if generator and not generator.lidar_changed.is_connected(_on_lidar_changed):
-		generator.lidar_changed.connect(_on_lidar_changed)
 
 func _on_lidar_changed(on: bool) -> void:
 	if not on and display:
 		display.clear_dots()
 
-func _physics_process(_delta: float) -> void:
-	if display == null or generator == null or not generator.lidar_active:
+func _physics_process(delta: float) -> void:
+	if display == null or generator == null:
 		return
+	if not generator.lidar_active:
+		if _showing:
+			display.clear_dots()
+			_showing = false
+		return
+	_accum += delta
+	var interval := float(grid_width * grid_height) / float(rays_per_second)
+	if _accum < interval:
+		return
+	_accum = 0.0
 
 	var space := get_world_3d().direct_space_state
 	var aspect := float(grid_width) / float(grid_height)
@@ -76,3 +99,10 @@ func _physics_process(_delta: float) -> void:
 				brightness.append(depth_b * angle_b)
 
 	display.set_dots(positions, brightness)
+	_showing = true
+
+func _unhandled_input(event: InputEvent) -> void: #This is just to see performance, we can delete this later
+	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:
+		_preset = (_preset + 1) % _PRESETS.size()
+		rays_per_second = _PRESETS[_preset]
+		print("Lidar rays per second: ", rays_per_second)

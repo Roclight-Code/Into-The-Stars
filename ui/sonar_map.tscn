@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://c1r6cq7hua4vx"]
+
+[ext_resource type="Script" uid="uid://bgugf3lo84p5p" path="res://ui/sonar_map.gd" id="1_6eibh"]
+
+[node name="SonarMap" type="Control" unique_id=603789068]
+custom_minimum_size = Vector2(260, 260)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 260.0
+offset_bottom = 260.0
+script = ExtResource("1_6eibh")

@@ -1,11 +1,14 @@
 extends Control
 
-@export var grid_width: int = 64   # keep in sync with the scanner
-@export var grid_height: int = 36
 @export var dot_color: Color = Color(0.3, 1.0, 0.45)
 
+var _grid := Vector2i(64, 36)
 var _positions := PackedVector2Array()
 var _brightness := PackedFloat32Array()
+
+func set_grid(width: int, height: int) -> void:
+	_grid = Vector2i(width, height)
+	queue_redraw()
 
 func set_dots(positions: PackedVector2Array, brightness: PackedFloat32Array) -> void:
 	_positions = positions
@@ -20,7 +23,7 @@ func clear_dots() -> void:
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), Color.BLACK)  # dark screen
 
-	var cell := Vector2(size.x / grid_width, size.y / grid_height)
+	var cell := Vector2(size.x / _grid.x, size.y / _grid.y)
 	var dot_size := cell * 0.6
 
 	for i in _positions.size():

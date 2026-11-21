@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://7othgpk3i41r" path="res://player/player.tscn" id="2_c6i3y"]
 [ext_resource type="PackedScene" uid="uid://7bccquxytsr1" path="res://rover/rover.tscn" id="3_c6i3y"]
 [ext_resource type="Script" uid="uid://bq7jnri3lw4nk" path="res://console/hold_button.gd" id="4_cm0pq"]
-[ext_resource type="Script" uid="uid://bgugf3lo84p5p" path="res://ui/sonar_map.gd" id="5_fos0i"]
+[ext_resource type="PackedScene" uid="uid://c1r6cq7hua4vx" path="res://ui/sonar_map.tscn" id="5_c2ibq"]
 [ext_resource type="Script" uid="uid://cqt7b8kh7c15" path="res://rover/lidar_display.gd" id="7_lgr22"]
 [ext_resource type="Script" uid="uid://dujfmgcs8dyp0" path="res://console/seat_script.gd" id="8_trn2v"]
 [ext_resource type="PackedScene" uid="uid://b00okfs1jm7r5" path="res://console/steering_crank.tscn" id="10_wkp8b"]
@@ -49,11 +49,13 @@ shader_parameter/target_res = Vector2(320, 240)
 shader_parameter/color_levels = 32.0
 shader_parameter/dither_strength = 0.6
 
-[node name="Main (Node3D)" type="Node3D" unique_id=1445796514]
+[node name="Main (Node3D)" type="Node3D" unique_id=1445796514 node_paths=PackedStringArray("sonar")]
 script = ExtResource("1_c2ibq")
+sonar = NodePath("CanvasLayer/SonarMap")
 
 [node name="Player" parent="." unique_id=1931699106 instance=ExtResource("2_c6i3y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.044044495, 13.517414, 0)
+platform_floor_layers = 4294901768
 
 [node name="PlayerPlatformStatic" type="StaticBody3D" parent="." unique_id=627813432]
 
@@ -90,14 +92,8 @@ mesh = SubResource("CylinderMesh_ayyc1")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1830825600]
 
-[node name="SonarMap" type="Control" parent="CanvasLayer" unique_id=689648934 node_paths=PackedStringArray("target")]
-custom_minimum_size = Vector2(260, 260)
-layout_mode = 3
-anchors_preset = 0
-offset_right = 260.0
-offset_bottom = 260.0
-script = ExtResource("5_fos0i")
-target = NodePath("../../Rover")
+[node name="SonarMap" parent="CanvasLayer" unique_id=603789068 instance=ExtResource("5_c2ibq")]
+scan_mask = 5
 
 [node name="TestWall" type="StaticBody3D" parent="." unique_id=1592318661]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.89424, 0, -33.253838)
@@ -181,7 +177,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5982988, 12.7880945, -3.777
 rover = NodePath("../../Rover")
 
 [node name="Watcher" parent="." unique_id=193177057 instance=ExtResource("15_j4qnp")]
-transform = Transform3D(-0.4, 0, -6.039832e-08, 0, 0.4, 0, 6.039832e-08, 0, -0.4, 17.971432, 0, 18.992065)
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 17.971432, -2.669918, 18.992065)
 
 [node name="Console" type="Node3D" parent="." unique_id=1691153871 node_paths=PackedStringArray("forward_button", "back_button", "crank", "generator", "lidar_display")]
 script = ExtResource("13_c6i3y")
