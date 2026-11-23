@@ -12,8 +12,9 @@
 shader = ExtResource("7_7q7m4")
 shader_parameter/line_count = 180.0
 shader_parameter/line_strength = 0.25
-shader_parameter/scroll_speed = 0.02
-shader_parameter/flicker = 0.0
+shader_parameter/scroll_speed = -0.01
+shader_parameter/pulse_strength = 0.03
+shader_parameter/pulse_speed = 0.4
 
 [node name="LogsDisplay" type="Control" unique_id=453909218]
 layout_mode = 3

@@ -1,9 +1,25 @@
 extends Node3D
 
+@export_group("Idle (no unread messages)")
+@export var idle_light_energy := 0.6
+@export var idle_light_color := Color(0.2, 0.6, 0.4)
+@export var emission_idle := 1.0
+
+@export_group("Alert (unread message)")
+@export var alert_light_energy := 4.0
+@export var alert_light_color := Color(1.0, 0.6, 0.2)
+@export var emission_alert := 2.5
+
+@export var fade_time := 0.4
+
 @onready var screen: MeshInstance3D = $Screen
 @onready var viewport: SubViewport = $SubViewport
+@onready var logs_display = $SubViewport/LogsDisplay
+@onready var backlight: OmniLight3D = $BackLight
 
 var screen_material: StandardMaterial3D
+var alert_on := false
+var tween: Tween
 
 func _ready() -> void:
 	screen_material = StandardMaterial3D.new()
@@ -11,5 +27,100 @@ func _ready() -> void:
 	screen_material.albedo_texture = tex
 	screen_material.emission_enabled = true
 	screen_material.emission_texture = tex
-	screen_material.emission_energy_multiplier = 1.0
+	screen_material.emission_energy_multiplier = emission_idle
 	screen.material_override = screen_material
+
+	backlight.light_energy = idle_light_energy
+	backlight.light_color = idle_light_color
+
+	logs_display.unread_changed.connect(_on_unread_changed)
+	_on_unread_changed(logs_display.get_unread_total())
+
+func _on_unread_changed(total: int) -> void:
+	set_alert(total > 0)
+
+func set_alert(on: bool) -> void:
+	if on == alert_on:
+		return
+	alert_on = on
+	if tween:
+		tween.kill()
+	tween = create_tween().set_parallel(true)
+	tween.tween_property(backlight, "light_energy", alert_light_energy if on else idle_light_energy, fade_time)
+	tween.tween_property(backlight, "light_color", alert_light_color if on else idle_light_color, fade_time)
+	tween.tween_property(screen_material, "emission_energy_multiplier", emission_alert if on else emission_idle, fade_time)
+
+@onready var focus_point: Marker3D = $FocusPoint
+
+var active := false   # true once the camera has arrived and clicks are forwarded
+var _busy := false
+var _player
+var _cam: Camera3D
+var _saved_cam_transform: Transform3D
+
+func enter(player) -> void:
+	if active or _busy:
+		return
+	_busy = true
+	_player = player
+	_cam = player.get_node("Head/Camera3D")
+	_saved_cam_transform = _cam.transform
+	player.controls_locked = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	var start: Transform3D = _cam.global_transform
+	var end: Transform3D = focus_point.global_transform
+	var t := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	t.tween_method(func(w): _cam.global_transform = start.interpolate_with(end, w), 0.0, 1.0, 0.4)
+	await t.finished
+	active = true
+	_busy = false
+
+func exit() -> void:
+	if not active or _busy:
+		return
+	_busy = true
+	active = false
+	var start: Transform3D = _cam.global_transform
+	var end: Transform3D = (_cam.get_parent() as Node3D).global_transform * _saved_cam_transform
+	var t := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	t.tween_method(func(w): _cam.global_transform = start.interpolate_with(end, w), 0.0, 1.0, 0.4)
+	await t.finished
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	_player.controls_locked = false
+	_busy = false
+
+func _input(event: InputEvent) -> void:
+	if not active:
+		return
+	if event.is_action_pressed("ui_cancel"):
+		exit()
+		get_viewport().set_input_as_handled()
+		return
+	if event is InputEventMouse:
+		var pos = _mouse_to_viewport(event.position)
+		if pos == null:
+			return
+		var forwarded: InputEventMouse = event.duplicate()
+		forwarded.position = pos
+		forwarded.global_position = pos
+		viewport.push_input(forwarded)
+		get_viewport().set_input_as_handled()
+
+func _mouse_to_viewport(mouse: Vector2) -> Variant:
+	var cam := get_viewport().get_camera_3d()
+	if cam == null:
+		return null
+	var inv := screen.global_transform.affine_inverse()
+	var origin: Vector3 = inv * cam.project_ray_origin(mouse)
+	var dir: Vector3 = inv.basis * cam.project_ray_normal(mouse)
+	if absf(dir.z) < 0.0001:
+		return null
+	var t := -origin.z / dir.z
+	if t < 0.0:
+		return null
+	var hit := origin + dir * t
+	var quad_size: Vector2 = (screen.mesh as QuadMesh).size
+	var uv := Vector2(hit.x / quad_size.x + 0.5, 0.5 - hit.y / quad_size.y)
+	if uv.x < 0.0 or uv.x > 1.0 or uv.y < 0.0 or uv.y > 1.0:
+		return null
+	return uv * Vector2(viewport.size)

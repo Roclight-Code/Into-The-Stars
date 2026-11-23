@@ -13,7 +13,9 @@
 [ext_resource type="Shader" uid="uid://cf77wougvcrki" path="res://shaders/psx_post.gdshader" id="12_c6i3y"]
 [ext_resource type="Script" uid="uid://c8tl554dn4qau" path="res://console/console.gd" id="13_c6i3y"]
 [ext_resource type="PackedScene" uid="uid://b2a7ykg3cq00b" path="res://console/generator.tscn" id="14_c2ibq"]
+[ext_resource type="PackedScene" uid="uid://nmq02aenwq50" path="res://logs_monitor.tscn" id="15_fpfj3"]
 [ext_resource type="PackedScene" uid="uid://dk8ls8w17ubpo" path="res://watcher.tscn" id="15_j4qnp"]
+[ext_resource type="Script" uid="uid://dj5d57rfniuls" path="res://screen_body.gd" id="16_fpfj3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4s4q"]
 size = Vector3(1, 0.5, 1)
@@ -48,6 +50,8 @@ shader = ExtResource("12_c6i3y")
 shader_parameter/target_res = Vector2(320, 240)
 shader_parameter/color_levels = 32.0
 shader_parameter/dither_strength = 0.6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0alb6"]
 
 [node name="Main (Node3D)" type="Node3D" unique_id=1445796514 node_paths=PackedStringArray("sonar")]
 script = ExtResource("1_c2ibq")
@@ -186,6 +190,20 @@ back_button = NodePath("../BackButton")
 crank = NodePath("../SteeringCrank")
 generator = NodePath("../Generator")
 lidar_display = NodePath("../MonitorScreen/LidarViewport/LidarDisplay")
+
+[node name="LogsMonitor" parent="." unique_id=2035055045 instance=ExtResource("15_fpfj3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4141531, 13.458085, -2.3975477)
+
+[node name="ScreenBody" type="StaticBody3D" parent="LogsMonitor" unique_id=1112361771]
+collision_layer = 2
+script = ExtResource("16_fpfj3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LogsMonitor/ScreenBody" unique_id=1924903068]
+transform = Transform3D(0.8, 0, 0, 0, 0.6, 0, 0, 0, 0.02, 0, 0, 0)
+shape = SubResource("BoxShape3D_0alb6")
+
+[node name="FocusPoint" type="Marker3D" parent="LogsMonitor" unique_id=1713346594]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
 
 [editable path="Player"]
 [editable path="Generator"]

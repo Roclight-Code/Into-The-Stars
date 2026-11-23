@@ -5,13 +5,21 @@ extends Control
 @onready var emails_section: CategorySection = $HBox/Sidebar/EmailsSection
 @onready var content_panel = $HBox/ContentPanel
 
+signal unread_changed(total: int)
+
+@export var font_size := 28
+
 func _ready() -> void:
+	var ui_theme := Theme.new()
+	ui_theme.default_font_size = font_size
+	theme = ui_theme
 	for e in LogDatabase.creatures: creatures_section.add_entry(e)
 	for e in LogDatabase.audio: audio_section.add_entry(e)
 	for e in LogDatabase.emails: emails_section.add_entry(e)
 
 	for section in [creatures_section, audio_section, emails_section]:
 		section.entry_selected.connect(_on_entry_selected)
+		section.unread_changed.connect(_on_section_unread_changed)
 
 	LogDatabase.log_added.connect(_on_log_added)
 
@@ -33,3 +41,9 @@ func _on_entry_selected(entry: LogEntry) -> void:
 	test_email.sender = "A"
 	test_email.recipient = "B"
 	LogDatabase.add_log(test_email)
+
+func get_unread_total() -> int:
+	return creatures_section.unread.size() + audio_section.unread.size() + emails_section.unread.size()
+
+func _on_section_unread_changed() -> void:
+	unread_changed.emit(get_unread_total())

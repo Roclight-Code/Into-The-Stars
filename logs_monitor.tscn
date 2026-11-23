@@ -11,6 +11,14 @@ script = ExtResource("1_nkatu")
 [node name="Screen" type="MeshInstance3D" parent="." unique_id=833146214]
 mesh = SubResource("QuadMesh_ayyc1")
 
-[node name="SubViewport" type="SubViewport" parent="." unique_id=783929003]
+[node name="BackLight" type="OmniLight3D" parent="." unique_id=475718000]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
+light_color = Color(0.2465064, 0.98889035, 0.6241916, 1)
+light_energy = 0.6
+omni_range = 2.0
 
-[node name="LogsDisplay" parent="." unique_id=453909218 instance=ExtResource("2_yrsfc")]
+[node name="SubViewport" type="SubViewport" parent="." unique_id=783929003]
+size = Vector2i(512, 384)
+
+[node name="LogsDisplay" parent="SubViewport" unique_id=453909218 instance=ExtResource("2_yrsfc")]
+custom_maximum_size = Vector2(0, 0)

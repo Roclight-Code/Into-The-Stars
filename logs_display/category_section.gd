@@ -2,6 +2,7 @@ class_name CategorySection
 extends VBoxContainer
 
 signal entry_selected(entry: LogEntry)
+signal unread_changed
 
 @export var category_name: String = "Category"
 
@@ -31,12 +32,14 @@ func add_entry(entry: LogEntry, is_new := false) -> void:
 	if is_new:
 		unread[entry] = button
 		_update_header()
+		unread_changed.emit()
 
 func _on_entry_pressed(entry: LogEntry, button: Button) -> void:
 	if unread.has(entry):
 		unread.erase(entry)
 		button.text = entry.title
 		_update_header()
+		unread_changed.emit()
 	entry_selected.emit(entry)
 
 func _update_header() -> void:
