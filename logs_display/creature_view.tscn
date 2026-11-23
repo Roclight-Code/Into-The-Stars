@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://daoq8mn3uhygq"]
+
+[ext_resource type="Script" uid="uid://bn6onc4opfm4p" path="res://logs_display/creature_view.gd" id="1_cerbh"]
+
+[node name="CreatureView" type="VBoxContainer" unique_id=1310439427]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_cerbh")
+
+[node name="Header" type="Label" parent="." unique_id=379283570]
+layout_mode = 2
+
+[node name="Picture" type="TextureRect" parent="." unique_id=1228967109]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Body" type="RichTextLabel" parent="." unique_id=1561931939]
+layout_mode = 2
+size_flags_vertical = 3

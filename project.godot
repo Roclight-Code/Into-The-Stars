@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 NoiseBus="*uid://b251fv56wmth"
+LogDatabase="*uid://bh2wbd2xl50hy"
 
 [display]
 

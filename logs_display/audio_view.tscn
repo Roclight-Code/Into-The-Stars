@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bmlqc0kcq427w"]
+
+[ext_resource type="Script" uid="uid://rrtvv1ny1353" path="res://logs_display/audio_view.gd" id="1_y4v7k"]
+
+[node name="AudioView" type="VBoxContainer" unique_id=306956434]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_y4v7k")
+
+[node name="Header" type="Label" parent="." unique_id=644139107]
+layout_mode = 2
+
+[node name="Controls" type="HBoxContainer" parent="." unique_id=833180213]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="Controls" unique_id=91346363]
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="Controls" unique_id=445790372]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Body" type="RichTextLabel" parent="." unique_id=1821042490]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Player" type="AudioStreamPlayer" parent="." unique_id=1962282454]

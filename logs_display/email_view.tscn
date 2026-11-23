@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bd8cvyarapy60"]
+
+[ext_resource type="Script" uid="uid://c2embsb52qqtn" path="res://logs_display/email_view.gd" id="1_kvq4x"]
+
+[node name="EmailView" type="VBoxContainer" unique_id=1822925039]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_kvq4x")
+
+[node name="From" type="Label" parent="." unique_id=1395548870]
+layout_mode = 2
+
+[node name="To" type="Label" parent="." unique_id=1340523205]
+layout_mode = 2
+
+[node name="Subject" type="Label" parent="." unique_id=1923267386]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="." unique_id=1624276950]
+layout_mode = 2
+
+[node name="Body" type="RichTextLabel" parent="." unique_id=578033123]
+layout_mode = 2
+size_flags_vertical = 3

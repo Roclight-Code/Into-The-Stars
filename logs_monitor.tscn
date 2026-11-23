@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://nmq02aenwq50"]
+
+[ext_resource type="Script" uid="uid://5hsl2m3hhmbc" path="res://logs_monitor.gd" id="1_nkatu"]
+[ext_resource type="PackedScene" uid="uid://cd8e41itjx72c" path="res://logs_display/logs_display.tscn" id="2_yrsfc"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_ayyc1"]
+
+[node name="LogsMonitor" type="Node3D" unique_id=2035055045]
+script = ExtResource("1_nkatu")
+
+[node name="Screen" type="MeshInstance3D" parent="." unique_id=833146214]
+mesh = SubResource("QuadMesh_ayyc1")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=783929003]
+
+[node name="LogsDisplay" parent="." unique_id=453909218 instance=ExtResource("2_yrsfc")]

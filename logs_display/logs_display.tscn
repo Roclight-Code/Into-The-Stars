@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://cd8e41itjx72c"]
+
+[ext_resource type="Script" uid="uid://bi8j4ybpw28bi" path="res://logs_display/logs_display.gd" id="1_y7xbr"]
+[ext_resource type="PackedScene" uid="uid://bona1wek5di3" path="res://logs_display/category_section.tscn" id="2_3vrfv"]
+[ext_resource type="Script" uid="uid://b5tl6wda77onf" path="res://logs_display/content_panel.gd" id="3_sbr3e"]
+[ext_resource type="PackedScene" uid="uid://bmlqc0kcq427w" path="res://logs_display/audio_view.tscn" id="4_7q7m4"]
+[ext_resource type="PackedScene" uid="uid://daoq8mn3uhygq" path="res://logs_display/creature_view.tscn" id="5_qgpn2"]
+[ext_resource type="PackedScene" uid="uid://bd8cvyarapy60" path="res://logs_display/email_view.tscn" id="6_tct4k"]
+[ext_resource type="Shader" uid="uid://of3mulm2h6vf" path="res://logs_display/scanlines.gdshader" id="7_7q7m4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ayyc1"]
+shader = ExtResource("7_7q7m4")
+shader_parameter/line_count = 180.0
+shader_parameter/line_strength = 0.25
+shader_parameter/scroll_speed = 0.02
+shader_parameter/flicker = 0.0
+
+[node name="LogsDisplay" type="Control" unique_id=453909218]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_y7xbr")
+
+[node name="Background" type="ColorRect" parent="." unique_id=941920364]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBox" type="HBoxContainer" parent="." unique_id=638481213]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sidebar" type="VBoxContainer" parent="HBox" unique_id=2115051626]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="CreaturesSection" parent="HBox/Sidebar" unique_id=525828348 instance=ExtResource("2_3vrfv")]
+layout_mode = 2
+category_name = "Creatures"
+
+[node name="AudioSection" parent="HBox/Sidebar" unique_id=1507537094 instance=ExtResource("2_3vrfv")]
+layout_mode = 2
+category_name = "Audio Logs"
+
+[node name="EmailsSection" parent="HBox/Sidebar" unique_id=580126274 instance=ExtResource("2_3vrfv")]
+layout_mode = 2
+category_name = "Emails"
+
+[node name="ContentPanel" type="MarginContainer" parent="HBox" unique_id=1633240189]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("3_sbr3e")
+
+[node name="AudioView" parent="HBox/ContentPanel" unique_id=306956434 instance=ExtResource("4_7q7m4")]
+layout_mode = 2
+
+[node name="CreatureView" parent="HBox/ContentPanel" unique_id=1310439427 instance=ExtResource("5_qgpn2")]
+layout_mode = 2
+
+[node name="EmailView" parent="HBox/ContentPanel" unique_id=1822925039 instance=ExtResource("6_tct4k")]
+layout_mode = 2
+
+[node name="Scanlines" type="ColorRect" parent="." unique_id=1052473061]
+material = SubResource("ShaderMaterial_ayyc1")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

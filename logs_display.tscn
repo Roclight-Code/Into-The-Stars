@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://e2uyru8c3i77"]
+
+[node name="LogsDisplay" type="Control" unique_id=453909218]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="." unique_id=935959266]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBox" type="HBoxContainer" parent="." unique_id=2120629724]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBox" type="VBoxContainer" parent="HBox" unique_id=67436450]
+layout_mode = 2
+
+[node name="ContentPanel" type="MarginContainer" parent="HBox" unique_id=659744607]
+layout_mode = 2
+
+[node name="CreatureView" type="VBoxContainer" parent="HBox/ContentPanel" unique_id=699113347]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="HBox/ContentPanel/CreatureView" unique_id=1919854282]
+layout_mode = 2
+
+[node name="Picture" type="TextureRect" parent="HBox/ContentPanel/CreatureView" unique_id=37047508]
+layout_mode = 2
+
+[node name="Body" type="RichTextLabel" parent="HBox/ContentPanel/CreatureView" unique_id=635233618]
+layout_mode = 2
+
+[node name="EmailView" type="VBoxContainer" parent="HBox/ContentPanel" unique_id=273953630]
+layout_mode = 2
+
+[node name="From" type="Label" parent="HBox/ContentPanel/EmailView" unique_id=1916449977]
+layout_mode = 2
+
+[node name="To" type="Label" parent="HBox/ContentPanel/EmailView" unique_id=1370478618]
+layout_mode = 2
+
+[node name="Subject" type="Label" parent="HBox/ContentPanel/EmailView" unique_id=559003519]
+layout_mode = 2
+
+[node name="Body" type="RichTextLabel" parent="HBox/ContentPanel/EmailView" unique_id=982355635]
+layout_mode = 2
+
+[node name="AudioView" type="VBoxContainer" parent="HBox/ContentPanel" unique_id=1086389810]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="HBox/ContentPanel/AudioView" unique_id=1719923874]
+layout_mode = 2
+
+[node name="Controls" type="HBoxContainer" parent="HBox/ContentPanel/AudioView" unique_id=1370314738]
+layout_mode = 2
+
+[node name="Body" type="RichTextLabel" parent="HBox/ContentPanel/AudioView" unique_id=1978064303]
+layout_mode = 2
+
+[node name="Player" type="AudioStreamPlayer" parent="HBox/ContentPanel/AudioView" unique_id=1514103299]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="HBox/ContentPanel/AudioView" unique_id=1752279900]
+
+[node name="ScanLines" type="ColorRect" parent="." unique_id=93608591]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
