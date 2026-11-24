@@ -48,8 +48,11 @@ albedo_texture = SubResource("ViewportTexture_trn2v")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c2ibq"]
 shader = ExtResource("12_c6i3y")
 shader_parameter/target_res = Vector2(320, 240)
+shader_parameter/focus_res = Vector2(640, 480)
 shader_parameter/color_levels = 32.0
+shader_parameter/focus_color_levels = 64.0
 shader_parameter/dither_strength = 0.6
+shader_parameter/focus_dither_strength = 0.25
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0alb6"]
 

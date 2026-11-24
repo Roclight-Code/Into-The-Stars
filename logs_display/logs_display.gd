@@ -9,7 +9,14 @@ signal unread_changed(total: int)
 
 @export var font_size := 28
 
+func _fit_to_viewport() -> void:
+	position = Vector2.ZERO
+	size = get_viewport_rect().size
+
 func _ready() -> void:
+	_fit_to_viewport()
+	get_viewport().size_changed.connect(_fit_to_viewport)
+	await get_tree().process_frame
 	var ui_theme := Theme.new()
 	ui_theme.default_font_size = font_size
 	theme = ui_theme

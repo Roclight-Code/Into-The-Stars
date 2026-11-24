@@ -58,6 +58,9 @@ var _player
 var _cam: Camera3D
 var _saved_cam_transform: Transform3D
 
+var _psx_focus := 0.0
+var _psx_tween: Tween
+
 func enter(player) -> void:
 	if active or _busy:
 		return
@@ -67,6 +70,8 @@ func enter(player) -> void:
 	_saved_cam_transform = _cam.transform
 	player.controls_locked = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	_fade_psx_focus(1.0)
+
 	var start: Transform3D = _cam.global_transform
 	var end: Transform3D = focus_point.global_transform
 	var t := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
@@ -80,6 +85,8 @@ func exit() -> void:
 		return
 	_busy = true
 	active = false
+	_fade_psx_focus(0.0)
+
 	var start: Transform3D = _cam.global_transform
 	var end: Transform3D = (_cam.get_parent() as Node3D).global_transform * _saved_cam_transform
 	var t := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
@@ -88,6 +95,16 @@ func exit() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_player.controls_locked = false
 	_busy = false
+
+func _fade_psx_focus(to: float) -> void:
+	if _psx_tween:
+		_psx_tween.kill()
+	_psx_tween = create_tween()
+	_psx_tween.tween_method(_set_psx_focus, _psx_focus, to, 0.4)
+
+func _set_psx_focus(v: float) -> void:
+	_psx_focus = v
+	RenderingServer.global_shader_parameter_set("psx_focus", v)
 
 func _input(event: InputEvent) -> void:
 	if not active:

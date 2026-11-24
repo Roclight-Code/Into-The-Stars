@@ -18,7 +18,11 @@ light_energy = 0.6
 omni_range = 2.0
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=783929003]
-size = Vector2i(512, 384)
+size = Vector2i(768, 576)
 
 [node name="LogsDisplay" parent="SubViewport" unique_id=453909218 instance=ExtResource("2_yrsfc")]
-custom_maximum_size = Vector2(0, 0)
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
