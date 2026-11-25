@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CreatureLog" format=3 uid="uid://c2hrfgk653xnb"]
+
+[ext_resource type="Texture2D" uid="uid://cxhidh5d7li31" path="res://icon.svg" id="1_ao54r"]
+[ext_resource type="Script" uid="uid://d4c618kau83ip" path="res://logs/creature_log.gd" id="1_wv7pr"]
+
+[resource]
+script = ExtResource("1_wv7pr")
+picture = ExtResource("1_ao54r")
+title = "Watcher"
+body = "Seems to just stare at me. i don't know what it wants from me and I don't really care. As long as it doesn't interfere with my mission."
+metadata/_custom_type_script = "uid://d4c618kau83ip"

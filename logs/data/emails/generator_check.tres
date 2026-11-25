@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EmailLog" format=3 uid="uid://de7s84rb2f778"]
+
+[ext_resource type="Script" uid="uid://cbkq1si8vjk4r" path="res://logs/email_log.gd" id="1_fecn8"]
+
+[resource]
+script = ExtResource("1_fecn8")
+sender = "John"
+recipient = "Adam"
+title = "Check"
+body = "Just checking to see if this works is all. Yep"
+metadata/_custom_type_script = "uid://cbkq1si8vjk4r"

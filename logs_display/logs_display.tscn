@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bi8j4ybpw28bi" path="res://logs_display/logs_display.gd" id="1_y7xbr"]
 [ext_resource type="PackedScene" uid="uid://bona1wek5di3" path="res://logs_display/category_section.tscn" id="2_3vrfv"]
+[ext_resource type="Resource" uid="uid://b4uy3prh1vs1k" path="res://logs_display/default_skin.tres" id="2_qgpn2"]
 [ext_resource type="Script" uid="uid://b5tl6wda77onf" path="res://logs_display/content_panel.gd" id="3_sbr3e"]
 [ext_resource type="PackedScene" uid="uid://bmlqc0kcq427w" path="res://logs_display/audio_view.tscn" id="4_7q7m4"]
 [ext_resource type="PackedScene" uid="uid://daoq8mn3uhygq" path="res://logs_display/creature_view.tscn" id="5_qgpn2"]
@@ -21,6 +22,7 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_y7xbr")
 font_size = 22
+skin = ExtResource("2_qgpn2")
 
 [node name="Background" type="ColorRect" parent="." unique_id=941920364]
 layout_mode = 1

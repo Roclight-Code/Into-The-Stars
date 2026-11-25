@@ -1,14 +1,17 @@
 [gd_scene format=3 uid="uid://bona1wek5di3"]
 
 [ext_resource type="Script" uid="uid://4yra7fsppj4e" path="res://logs_display/category_section.gd" id="1_wagll"]
+[ext_resource type="Script" uid="uid://ba4cmdqhhc7rq" path="res://logs_display/log_button.gd" id="2_jigc7"]
 
 [node name="CategorySection" type="VBoxContainer" unique_id=525828348]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_wagll")
+category_name = null
 
 [node name="Header" type="Button" parent="." unique_id=2046073776]
 layout_mode = 2
+script = ExtResource("2_jigc7")
 
 [node name="List" type="VBoxContainer" parent="." unique_id=853958258]
 layout_mode = 2

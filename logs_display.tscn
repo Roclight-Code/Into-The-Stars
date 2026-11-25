@@ -65,8 +65,6 @@ layout_mode = 2
 
 [node name="Player" type="AudioStreamPlayer" parent="HBox/ContentPanel/AudioView" unique_id=1514103299]
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="HBox/ContentPanel/AudioView" unique_id=1752279900]
-
 [node name="ScanLines" type="ColorRect" parent="." unique_id=93608591]
 layout_mode = 0
 offset_right = 40.0

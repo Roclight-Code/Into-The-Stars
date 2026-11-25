@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AudioLog" format=3 uid="uid://bkfuponxqe82m"]
+
+[ext_resource type="Script" uid="uid://bfd3y4dtk8fvs" path="res://logs/audio_log.gd" id="1_mm7vv"]
+[ext_resource type="AudioStream" uid="uid://b3x24mi5ev5cb" path="res://sounds/Enter.wav" id="2_wpp3u"]
+
+[resource]
+script = ExtResource("1_mm7vv")
+stream = ExtResource("2_wpp3u")
+metadata/_custom_type_script = "uid://bfd3y4dtk8fvs"

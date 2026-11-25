@@ -35,6 +35,7 @@ func _ready() -> void:
 
 	logs_display.unread_changed.connect(_on_unread_changed)
 	_on_unread_changed(logs_display.get_unread_total())
+	logs_display.use_speaker($Speaker)
 
 func _on_unread_changed(total: int) -> void:
 	set_alert(total > 0)
@@ -65,6 +66,7 @@ func enter(player) -> void:
 	if active or _busy:
 		return
 	_busy = true
+	logs_display.console_entered()
 	_player = player
 	_cam = player.get_node("Head/Camera3D")
 	_saved_cam_transform = _cam.transform
@@ -84,6 +86,7 @@ func exit() -> void:
 	if not active or _busy:
 		return
 	_busy = true
+	logs_display.console_exited()
 	active = false
 	_fade_psx_focus(0.0)
 
@@ -141,3 +144,13 @@ func _mouse_to_viewport(mouse: Vector2) -> Variant:
 	if uv.x < 0.0 or uv.x > 1.0 or uv.y < 0.0 or uv.y > 1.0:
 		return null
 	return uv * Vector2(viewport.size)
+
+# TEMP TEST - delete later
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and event.keycode == KEY_L:
+		for path in [
+			"res://logs/data/emails/generator_check.tres",
+			"res://logs/data/audio/test_audio_log.tres",
+			"res://logs/data/creatures/watcher.tres"
+		]:
+			LogDatabase.add_log(load(path))

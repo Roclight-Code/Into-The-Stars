@@ -4,7 +4,13 @@ extends VBoxContainer
 @onready var play_button: Button = $Controls/PlayButton
 @onready var progress: ProgressBar = $Controls/ProgressBar
 @onready var body: RichTextLabel = $Body
-@onready var player: AudioStreamPlayer = $Player
+@onready var player = $Player   # untyped, so it can be either kind of player
+
+func use_speaker(speaker) -> void:
+	if player and player.finished.is_connected(_on_finished):
+		player.finished.disconnect(_on_finished)
+	player = speaker
+	player.finished.connect(_on_finished)
 
 var active := false  # true while audio is actually playing (not paused)
 
@@ -31,6 +37,7 @@ func stop() -> void:
 	set_process(false)
 
 func _on_play_pressed() -> void:
+	print("Play pressed. stream = ", player.stream, "  bus = ", player.bus, "  volume_db = ", player.volume_db)
 	if player.stream == null:
 		return
 	if active:
@@ -51,6 +58,8 @@ func _on_finished() -> void:
 	stop()
 
 func _process(_delta: float) -> void:
-	var length := player.stream.get_length()
+	if player.stream == null:
+		return
+	var length: float = player.stream.get_length()
 	if length > 0.0:
 		progress.value = player.get_playback_position() / length

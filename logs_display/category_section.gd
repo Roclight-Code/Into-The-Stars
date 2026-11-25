@@ -6,11 +6,17 @@ signal unread_changed
 
 @export var category_name: String = "Category"
 
-@onready var header: Button = $Header
+@onready var header: LogButton = $Header
 @onready var list: VBoxContainer = $List
+
+var skin: ConsoleSkin
 
 var expanded := false
 var unread: Dictionary = {}  # LogEntry -> Button
+
+func set_skin(s: ConsoleSkin) -> void:
+	skin = s
+	header.skin = s
 
 func _ready() -> void:
 	list.visible = false
@@ -24,8 +30,8 @@ func _toggle() -> void:
 	_update_header()
 
 func add_entry(entry: LogEntry, is_new := false) -> void:
-	var button := Button.new()
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	var button := LogButton.new()
+	button.skin = skin
 	button.text = ("* " if is_new else "") + entry.title
 	button.pressed.connect(_on_entry_pressed.bind(entry, button))
 	list.add_child(button)

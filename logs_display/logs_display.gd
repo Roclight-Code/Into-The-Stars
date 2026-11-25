@@ -8,6 +8,7 @@ extends Control
 signal unread_changed(total: int)
 
 @export var font_size := 28
+@export var skin: ConsoleSkin
 
 func _fit_to_viewport() -> void:
 	position = Vector2.ZERO
@@ -20,6 +21,8 @@ func _ready() -> void:
 	var ui_theme := Theme.new()
 	ui_theme.default_font_size = font_size
 	theme = ui_theme
+	for s in [creatures_section, audio_section, emails_section]:
+		s.set_skin(skin)
 	for e in LogDatabase.creatures: creatures_section.add_entry(e)
 	for e in LogDatabase.audio: audio_section.add_entry(e)
 	for e in LogDatabase.emails: emails_section.add_entry(e)
@@ -41,16 +44,35 @@ func _on_log_added(entry: LogEntry) -> void:
 
 func _on_entry_selected(entry: LogEntry) -> void:
 	content_panel.show_entry(entry)
-	
-		# TEMP TEST - delete later
-	var test_email := EmailLog.new()
-	test_email.title = "Test email"
-	test_email.sender = "A"
-	test_email.recipient = "B"
-	LogDatabase.add_log(test_email)
+
+func _unlock_folder(path: String) -> void:
+	for file in DirAccess.get_files_at(path):
+		var f := file.trim_suffix(".remap")
+		if f.ends_with(".tres"):
+			var entry = load(path.path_join(f))
+			if entry is LogEntry:
+				LogDatabase.add_log(entry)
 
 func get_unread_total() -> int:
 	return creatures_section.unread.size() + audio_section.unread.size() + emails_section.unread.size()
 
 func _on_section_unread_changed() -> void:
 	unread_changed.emit(get_unread_total())
+
+func console_entered() -> void:
+	_play_sound(skin.console_enter_sound if skin else null)
+
+func console_exited() -> void:
+	_play_sound(skin.console_exit_sound if skin else null)
+
+func _play_sound(stream: AudioStream) -> void:
+	if stream == null:
+		return
+	var p := AudioStreamPlayer.new()
+	p.stream = stream
+	add_child(p)
+	p.finished.connect(p.queue_free)
+	p.play()
+
+func use_speaker(speaker) -> void:
+	content_panel.audio_view.use_speaker(speaker)
