@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://dj5d57rfniuls" path="res://screen_body.gd" id="16_fpfj3"]
 [ext_resource type="Script" uid="uid://d3ojgjxw30e3t" path="res://area_3d.gd" id="17_kjvhd"]
 [ext_resource type="Script" uid="uid://dfrw1ipgove7l" path="res://logs/log_unlocker.gd" id="18_5tuhn"]
+[ext_resource type="Resource" uid="uid://bkfuponxqe82m" path="res://logs/data/audio/test_audio_log.tres" id="19_5tuhn"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4s4q"]
 size = Vector3(1, 0.5, 1)
@@ -221,6 +222,7 @@ script = ExtResource("17_kjvhd")
 
 [node name="LogUnlocker" type="Node" parent="Area3D" unique_id=1395318936]
 script = ExtResource("18_5tuhn")
+log_entry = ExtResource("19_5tuhn")
 metadata/_custom_type_script = "uid://dfrw1ipgove7l"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1628814280]

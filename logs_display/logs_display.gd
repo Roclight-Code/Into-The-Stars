@@ -20,6 +20,11 @@ func _ready() -> void:
 	await get_tree().process_frame
 	var ui_theme := Theme.new()
 	ui_theme.default_font_size = font_size
+	if skin:
+		ui_theme.set_color("font_color", "Label", skin.text_color)
+		ui_theme.set_color("default_color", "RichTextLabel", skin.text_color)
+		if skin.font:
+			ui_theme.default_font = skin.font
 	theme = ui_theme
 	for s in [creatures_section, audio_section, emails_section]:
 		s.set_skin(skin)

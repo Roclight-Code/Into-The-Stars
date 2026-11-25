@@ -24,7 +24,7 @@ var tween: Tween
 func _ready() -> void:
 	screen_material = StandardMaterial3D.new()
 	var tex := viewport.get_texture()
-	screen_material.albedo_texture = tex
+	screen_material.albedo_color = Color.BLACK
 	screen_material.emission_enabled = true
 	screen_material.emission_texture = tex
 	screen_material.emission_energy_multiplier = emission_idle

@@ -11,6 +11,7 @@ extends Resource
 @export var font: Font
 @export var font_color := Color(0.6, 1.0, 0.75)
 @export var font_hover_color := Color(1, 1, 1)
+@export var text_color := Color(0.7, 1.0, 0.8)
 
 @export_group("Sounds")
 @export var hover_sound: AudioStream

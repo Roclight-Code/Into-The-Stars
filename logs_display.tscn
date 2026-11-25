@@ -34,6 +34,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Body" type="RichTextLabel" parent="HBox/ContentPanel/CreatureView" unique_id=635233618]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
 [node name="EmailView" type="VBoxContainer" parent="HBox/ContentPanel" unique_id=273953630]
@@ -49,6 +50,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Body" type="RichTextLabel" parent="HBox/ContentPanel/EmailView" unique_id=982355635]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
 [node name="AudioView" type="VBoxContainer" parent="HBox/ContentPanel" unique_id=1086389810]
@@ -61,6 +63,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Body" type="RichTextLabel" parent="HBox/ContentPanel/AudioView" unique_id=1978064303]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
 [node name="Player" type="AudioStreamPlayer" parent="HBox/ContentPanel/AudioView" unique_id=1514103299]
