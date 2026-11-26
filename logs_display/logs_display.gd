@@ -26,6 +26,11 @@ func _ready() -> void:
 		if skin.font:
 			ui_theme.default_font = skin.font
 	theme = ui_theme
+	if skin:
+		$Background.color = skin.background_color
+		var scan_mat := $Scanlines.material as ShaderMaterial
+		if scan_mat:
+			scan_mat.set_shader_parameter("tint", skin.scanline_color)
 	for s in [creatures_section, audio_section, emails_section]:
 		s.set_skin(skin)
 	for e in LogDatabase.creatures: creatures_section.add_entry(e)

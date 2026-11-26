@@ -1,7 +1,9 @@
 [gd_resource type="Resource" script_class="ConsoleSkin" format=3 uid="uid://b4uy3prh1vs1k"]
 
 [ext_resource type="Script" uid="uid://n562808p2bwg" path="res://logs_display/console_skin.gd" id="1_e6ifw"]
+[ext_resource type="AudioStream" uid="uid://b3x24mi5ev5cb" path="res://logs/data/sounds/Enter.wav" id="1_fq4hq"]
 
 [resource]
 script = ExtResource("1_e6ifw")
+click_sound = ExtResource("1_fq4hq")
 metadata/_custom_type_script = "uid://n562808p2bwg"

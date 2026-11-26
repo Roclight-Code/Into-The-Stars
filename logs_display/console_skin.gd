@@ -18,3 +18,7 @@ extends Resource
 @export var click_sound: AudioStream
 @export var console_enter_sound: AudioStream
 @export var console_exit_sound: AudioStream
+
+@export_group("Screen")
+@export var background_color := Color(0.0, 0.0, 0.0)
+@export var scanline_color := Color(0.2, 1.0, 0.4)

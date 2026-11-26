@@ -1,5 +1,16 @@
 [gd_scene format=3 uid="uid://e2uyru8c3i77"]
 
+[ext_resource type="Shader" uid="uid://of3mulm2h6vf" path="res://logs_display/scanlines.gdshader" id="1_3r43o"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ntyad"]
+shader = ExtResource("1_3r43o")
+shader_parameter/line_count = 90.0
+shader_parameter/line_strength = 0.3
+shader_parameter/tint = Color(0.2, 1, 0.4, 1)
+shader_parameter/scroll_speed = 0.02
+shader_parameter/pulse_strength = 0.03
+shader_parameter/pulse_speed = 0.4
+
 [node name="LogsDisplay" type="Control" unique_id=453909218]
 layout_mode = 3
 anchors_preset = 15
@@ -12,6 +23,7 @@ grow_vertical = 2
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
 
 [node name="HBox" type="HBoxContainer" parent="." unique_id=2120629724]
 layout_mode = 0
@@ -69,6 +81,7 @@ layout_mode = 2
 [node name="Player" type="AudioStreamPlayer" parent="HBox/ContentPanel/AudioView" unique_id=1514103299]
 
 [node name="ScanLines" type="ColorRect" parent="." unique_id=93608591]
+material = SubResource("ShaderMaterial_ntyad")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0

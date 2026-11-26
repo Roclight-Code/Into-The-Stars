@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://b3x24mi5ev5cb"
-path="res://.godot/imported/Enter.wav-ac9202366b43009eff0bab91cfad497d.sample"
+path="res://.godot/imported/Enter.wav-5bc166cfb64e74e7879c8638f0d89976.sample"
 
 [deps]
 
-source_file="res://sounds/Enter.wav"
-dest_files=["res://.godot/imported/Enter.wav-ac9202366b43009eff0bab91cfad497d.sample"]
+source_file="res://logs/data/sounds/Enter.wav"
+dest_files=["res://.godot/imported/Enter.wav-5bc166cfb64e74e7879c8638f0d89976.sample"]
 
 [params]
 
