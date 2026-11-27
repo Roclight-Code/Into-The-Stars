@@ -8,3 +8,4 @@ func _ready() -> void:
 func _on_body_entered(body: Node3D) -> void:
 	if body.has_method("sit_down"):
 		unlocker.unlock()
+#A test for the log unlocker function

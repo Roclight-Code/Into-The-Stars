@@ -21,12 +21,6 @@ func set_skin(value: ConsoleSkin) -> void:
 		add_theme_stylebox_override("pressed", _box(down_tex))
 		add_theme_stylebox_override("hover_pressed", _box(down_tex))
 		add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	if skin.font:
-		add_theme_font_override("font", skin.font)
-	add_theme_color_override("font_color", skin.font_color)
-	add_theme_color_override("font_hover_color", skin.font_hover_color)
-	add_theme_color_override("font_pressed_color", skin.font_hover_color)
-	add_theme_color_override("font_hover_pressed_color", skin.font_hover_color)
 
 func _box(tex: Texture2D) -> StyleBoxTexture:
 	var sb := StyleBoxTexture.new()

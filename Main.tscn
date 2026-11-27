@@ -13,9 +13,9 @@
 [ext_resource type="Shader" uid="uid://cf77wougvcrki" path="res://shaders/psx_post.gdshader" id="12_c6i3y"]
 [ext_resource type="Script" uid="uid://c8tl554dn4qau" path="res://console/console.gd" id="13_c6i3y"]
 [ext_resource type="PackedScene" uid="uid://b2a7ykg3cq00b" path="res://console/generator.tscn" id="14_c2ibq"]
-[ext_resource type="PackedScene" uid="uid://nmq02aenwq50" path="res://logs_monitor.tscn" id="15_fpfj3"]
+[ext_resource type="PackedScene" uid="uid://nmq02aenwq50" path="res://logs_display/logs_monitor.tscn" id="15_fpfj3"]
 [ext_resource type="PackedScene" uid="uid://dk8ls8w17ubpo" path="res://watcher.tscn" id="15_j4qnp"]
-[ext_resource type="Script" uid="uid://d3ojgjxw30e3t" path="res://area_3d.gd" id="17_kjvhd"]
+[ext_resource type="Script" uid="uid://d3ojgjxw30e3t" path="res://logs/area_3d.gd" id="17_kjvhd"]
 [ext_resource type="Script" uid="uid://dfrw1ipgove7l" path="res://logs/log_unlocker.gd" id="18_5tuhn"]
 [ext_resource type="Resource" uid="uid://bkfuponxqe82m" path="res://logs/data/audio/test_audio_log.tres" id="19_5tuhn"]
 

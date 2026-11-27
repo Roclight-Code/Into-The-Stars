@@ -5,9 +5,6 @@ extends MarginContainer
 @onready var audio_view = $AudioView
 
 func _ready() -> void:
-	for v in [creature_view, email_view, audio_view]:
-		v.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		v.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_hide_all()
 
 func _hide_all() -> void:

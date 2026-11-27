@@ -9,20 +9,26 @@
 [ext_resource type="PackedScene" uid="uid://bd8cvyarapy60" path="res://logs_display/email_view.tscn" id="6_tct4k"]
 [ext_resource type="Shader" uid="uid://of3mulm2h6vf" path="res://logs_display/scanlines.gdshader" id="7_7q7m4"]
 
+[sub_resource type="Theme" id="Theme_qgpn2"]
+default_font_size = 28
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ayyc1"]
 shader = ExtResource("7_7q7m4")
-shader_parameter/line_count = 25.0
-shader_parameter/line_strength = 0.2750000130625
+shader_parameter/line_count = 30.0
+shader_parameter/line_thickness = 0.5
+shader_parameter/line_softness = 0.3200000152
+shader_parameter/line_strength = 0.10000000475
+shader_parameter/gap_darkness = 0.0
 shader_parameter/tint = Color(0.2, 1, 0.4, 1)
-shader_parameter/scroll_speed = -0.01
-shader_parameter/pulse_strength = 0.150000007125
+shader_parameter/scroll_speed = -0.02
+shader_parameter/pulse_strength = 0.03
 shader_parameter/pulse_speed = 0.4
 
 [node name="LogsDisplay" type="Control" unique_id=453909218]
 layout_mode = 3
 anchors_preset = 0
+theme = SubResource("Theme_qgpn2")
 script = ExtResource("1_y7xbr")
-font_size = 22
 skin = ExtResource("2_qgpn2")
 
 [node name="Background" type="ColorRect" parent="." unique_id=941920364]

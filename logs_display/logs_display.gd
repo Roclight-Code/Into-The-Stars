@@ -2,8 +2,7 @@ extends Control
 
 signal unread_changed(total: int)
 
-@export var font_size := 28
-@export var skin: ConsoleSkin
+@export var skin: ConsoleSkin   # button images + sounds
 
 @onready var creatures_section: CategorySection = $HBox/Sidebar/CreaturesSection
 @onready var audio_section: CategorySection = $HBox/Sidebar/AudioSection
@@ -17,19 +16,6 @@ func _fit_to_viewport() -> void:
 func _ready() -> void:
 	_fit_to_viewport()
 	get_viewport().size_changed.connect(_fit_to_viewport)
-	var ui_theme := Theme.new()
-	ui_theme.default_font_size = font_size
-	if skin:
-		ui_theme.set_color("font_color", "Label", skin.text_color)
-		ui_theme.set_color("default_color", "RichTextLabel", skin.text_color)
-		if skin.font:
-			ui_theme.default_font = skin.font
-	theme = ui_theme
-	if skin:
-		$Background.color = skin.background_color
-		var scan_mat := $Scanlines.material as ShaderMaterial
-		if scan_mat:
-			scan_mat.set_shader_parameter("tint", skin.scanline_color)
 	for s in [creatures_section, audio_section, emails_section]:
 		s.set_skin(skin)
 	for e in LogDatabase.creatures: creatures_section.add_entry(e)

@@ -1,8 +1,7 @@
 extends Node3D
 
-@export_group("Idle (no unread messages)")
-@export var idle_light_energy := 0.6
-@export var idle_light_color := Color(0.2, 0.6, 0.4)
+# The idle look of the light is whatever you set on the BackLight node itself.
+@export_group("Screen glow")
 @export var emission_idle := 1.0
 
 @export_group("Alert (unread message)")
@@ -20,9 +19,11 @@ extends Node3D
 @onready var viewport: SubViewport = $SubViewport
 @onready var logs_display = $SubViewport/LogsDisplay
 @onready var backlight: OmniLight3D = $BackLight
-@onready var focus_point: Marker3D = $FocusPoint
+@onready var focus_point: Marker3D = find_child("FocusPoint", true, false)
 
 var screen_material: StandardMaterial3D
+var _idle_energy: float
+var _idle_color: Color
 var alert_on := false
 var tween: Tween
 
@@ -44,8 +45,10 @@ func _ready() -> void:
 	screen_material.emission_energy_multiplier = emission_idle
 	screen.material_override = screen_material
 
-	backlight.light_energy = idle_light_energy
-	backlight.light_color = idle_light_color
+	_idle_energy = backlight.light_energy
+	_idle_color = backlight.light_color
+	if focus_point == null:
+		push_error("LogsMonitor: no FocusPoint (Marker3D) found under this monitor")
 
 	logs_display.unread_changed.connect(_on_unread_changed)
 	_on_unread_changed(logs_display.get_unread_total())
@@ -61,8 +64,8 @@ func set_alert(on: bool) -> void:
 	if tween:
 		tween.kill()
 	tween = create_tween().set_parallel(true)
-	tween.tween_property(backlight, "light_energy", alert_light_energy if on else idle_light_energy, fade_time)
-	tween.tween_property(backlight, "light_color", alert_light_color if on else idle_light_color, fade_time)
+	tween.tween_property(backlight, "light_energy", alert_light_energy if on else _idle_energy, fade_time)
+	tween.tween_property(backlight, "light_color", alert_light_color if on else _idle_color, fade_time)
 	tween.tween_property(screen_material, "emission_energy_multiplier", emission_alert if on else emission_idle, fade_time)
 
 func enter(player) -> void:
