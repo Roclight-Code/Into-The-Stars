@@ -11,10 +11,11 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ayyc1"]
 shader = ExtResource("7_7q7m4")
-shader_parameter/line_count = 180.0
-shader_parameter/line_strength = 0.25
+shader_parameter/line_count = 25.0
+shader_parameter/line_strength = 0.2750000130625
+shader_parameter/tint = Color(0.2, 1, 0.4, 1)
 shader_parameter/scroll_speed = -0.01
-shader_parameter/pulse_strength = 0.03
+shader_parameter/pulse_strength = 0.150000007125
 shader_parameter/pulse_speed = 0.4
 
 [node name="LogsDisplay" type="Control" unique_id=453909218]
@@ -31,6 +32,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.012617188, 0.012617188, 0.012617188, 1)
 
 [node name="HBox" type="HBoxContainer" parent="." unique_id=638481213]
 layout_mode = 1

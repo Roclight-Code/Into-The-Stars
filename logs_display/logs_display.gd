@@ -1,14 +1,14 @@
 extends Control
 
-@onready var creatures_section: CategorySection = $HBox/Sidebar/CreaturesSection
-@onready var audio_section: CategorySection = $HBox/Sidebar/AudioSection
-@onready var emails_section: CategorySection = $HBox/Sidebar/EmailsSection
-@onready var content_panel = $HBox/ContentPanel
-
 signal unread_changed(total: int)
 
 @export var font_size := 28
 @export var skin: ConsoleSkin
+
+@onready var creatures_section: CategorySection = $HBox/Sidebar/CreaturesSection
+@onready var audio_section: CategorySection = $HBox/Sidebar/AudioSection
+@onready var emails_section: CategorySection = $HBox/Sidebar/EmailsSection
+@onready var content_panel = $HBox/ContentPanel
 
 func _fit_to_viewport() -> void:
 	position = Vector2.ZERO
@@ -17,7 +17,6 @@ func _fit_to_viewport() -> void:
 func _ready() -> void:
 	_fit_to_viewport()
 	get_viewport().size_changed.connect(_fit_to_viewport)
-	await get_tree().process_frame
 	var ui_theme := Theme.new()
 	ui_theme.default_font_size = font_size
 	if skin:
@@ -50,18 +49,9 @@ func _on_log_added(entry: LogEntry) -> void:
 		audio_section.add_entry(entry, true)
 	elif entry is EmailLog:
 		emails_section.add_entry(entry, true)
-	# backlight pulse will go here later
 
 func _on_entry_selected(entry: LogEntry) -> void:
 	content_panel.show_entry(entry)
-
-func _unlock_folder(path: String) -> void:
-	for file in DirAccess.get_files_at(path):
-		var f := file.trim_suffix(".remap")
-		if f.ends_with(".tres"):
-			var entry = load(path.path_join(f))
-			if entry is LogEntry:
-				LogDatabase.add_log(entry)
 
 func get_unread_total() -> int:
 	return creatures_section.unread.size() + audio_section.unread.size() + emails_section.unread.size()

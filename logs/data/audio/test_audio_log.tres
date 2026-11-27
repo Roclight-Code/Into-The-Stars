@@ -6,4 +6,9 @@
 [resource]
 script = ExtResource("1_mm7vv")
 stream = ExtResource("2_wpp3u")
+title = "Test"
+body = "John: I'm lactose intolerant
+Lactos intolerant? :Adam
+John: Yes, I'm lactose intolerant. I'll shit myself if I eat too much
+Shit Yourself? This line is just to see if it works :Adam"
 metadata/_custom_type_script = "uid://bfd3y4dtk8fvs"

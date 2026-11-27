@@ -1,9 +1,14 @@
 [gd_scene format=3 uid="uid://nmq02aenwq50"]
 
 [ext_resource type="Script" uid="uid://5hsl2m3hhmbc" path="res://logs_monitor.gd" id="1_nkatu"]
+[ext_resource type="Script" uid="uid://dj5d57rfniuls" path="res://screen_body.gd" id="2_m00pn"]
 [ext_resource type="PackedScene" uid="uid://cd8e41itjx72c" path="res://logs_display/logs_display.tscn" id="2_yrsfc"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_ayyc1"]
+size = Vector2(1, 0.75)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ayyc1"]
+size = Vector3(1, 0.75, 0.02)
 
 [node name="LogsMonitor" type="Node3D" unique_id=2035055045]
 script = ExtResource("1_nkatu")
@@ -11,6 +16,16 @@ emission_alert = 1.3
 
 [node name="Screen" type="MeshInstance3D" parent="." unique_id=833146214]
 mesh = SubResource("QuadMesh_ayyc1")
+
+[node name="ScreenBody" type="StaticBody3D" parent="Screen" unique_id=412775021]
+collision_layer = 2
+script = ExtResource("2_m00pn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Screen/ScreenBody" unique_id=534042405]
+shape = SubResource("BoxShape3D_ayyc1")
+
+[node name="FocusPoint" type="Marker3D" parent="Screen/ScreenBody/CollisionShape3D" unique_id=510395813]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.08)
 
 [node name="BackLight" type="OmniLight3D" parent="." unique_id=475718000]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)

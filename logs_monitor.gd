@@ -10,16 +10,30 @@ extends Node3D
 @export var alert_light_color := Color(1.0, 0.6, 0.2)
 @export var emission_alert := 2.5
 
+@export_group("Other")
 @export var fade_time := 0.4
+
+@export_group("Debug")
+@export var debug_unlock_key := false   # when on, pressing L unlocks the test logs
 
 @onready var screen: MeshInstance3D = $Screen
 @onready var viewport: SubViewport = $SubViewport
 @onready var logs_display = $SubViewport/LogsDisplay
 @onready var backlight: OmniLight3D = $BackLight
+@onready var focus_point: Marker3D = $FocusPoint
 
 var screen_material: StandardMaterial3D
 var alert_on := false
 var tween: Tween
+
+var active := false   # true once the camera has arrived and clicks are forwarded
+var _busy := false
+var _player
+var _cam: Camera3D
+var _saved_cam_transform: Transform3D
+
+var _psx_focus := 0.0
+var _psx_tween: Tween
 
 func _ready() -> void:
 	screen_material = StandardMaterial3D.new()
@@ -50,17 +64,6 @@ func set_alert(on: bool) -> void:
 	tween.tween_property(backlight, "light_energy", alert_light_energy if on else idle_light_energy, fade_time)
 	tween.tween_property(backlight, "light_color", alert_light_color if on else idle_light_color, fade_time)
 	tween.tween_property(screen_material, "emission_energy_multiplier", emission_alert if on else emission_idle, fade_time)
-
-@onready var focus_point: Marker3D = $FocusPoint
-
-var active := false   # true once the camera has arrived and clicks are forwarded
-var _busy := false
-var _player
-var _cam: Camera3D
-var _saved_cam_transform: Transform3D
-
-var _psx_focus := 0.0
-var _psx_tween: Tween
 
 func enter(player) -> void:
 	if active or _busy:
@@ -145,12 +148,13 @@ func _mouse_to_viewport(mouse: Vector2) -> Variant:
 		return null
 	return uv * Vector2(viewport.size)
 
-# TEMP TEST - delete later
 func _unhandled_input(event: InputEvent) -> void:
+	if not debug_unlock_key:
+		return
 	if event is InputEventKey and event.pressed and event.keycode == KEY_L:
 		for path in [
 			"res://logs/data/emails/generator_check.tres",
 			"res://logs/data/audio/test_audio_log.tres",
-			"res://logs/data/creatures/watcher.tres"
+			"res://logs/data/creatures/watcher.tres",
 		]:
 			LogDatabase.add_log(load(path))

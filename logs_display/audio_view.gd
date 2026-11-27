@@ -37,7 +37,6 @@ func stop() -> void:
 	set_process(false)
 
 func _on_play_pressed() -> void:
-	print("Play pressed. stream = ", player.stream, "  bus = ", player.bus, "  volume_db = ", player.volume_db)
 	if player.stream == null:
 		return
 	if active:
