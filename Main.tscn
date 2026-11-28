@@ -17,7 +17,9 @@
 [ext_resource type="PackedScene" uid="uid://dk8ls8w17ubpo" path="res://watcher.tscn" id="15_j4qnp"]
 [ext_resource type="Script" uid="uid://d3ojgjxw30e3t" path="res://logs/area_3d.gd" id="17_kjvhd"]
 [ext_resource type="Script" uid="uid://dfrw1ipgove7l" path="res://logs/log_unlocker.gd" id="18_5tuhn"]
+[ext_resource type="Resource" uid="uid://c2hrfgk653xnb" path="res://logs/data/creatures/watcher.tres" id="19_2gh4u"]
 [ext_resource type="Resource" uid="uid://bkfuponxqe82m" path="res://logs/data/audio/test_audio_log.tres" id="19_5tuhn"]
+[ext_resource type="Resource" uid="uid://de7s84rb2f778" path="res://logs/data/emails/generator_check.tres" id="20_devvj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4s4q"]
 size = Vector3(1, 0.5, 1)
@@ -216,6 +218,21 @@ shape = SubResource("CylinderShape3D_a368p")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D/CollisionShape3D" unique_id=1040091581]
 mesh = SubResource("CylinderMesh_c4s4q")
+
+[node name="LogUnlocker2" type="Node" parent="Area3D" unique_id=1255748642]
+script = ExtResource("18_5tuhn")
+log_entry = ExtResource("19_2gh4u")
+metadata/_custom_type_script = "uid://dfrw1ipgove7l"
+
+[node name="LogUnlocker3" type="Node" parent="Area3D" unique_id=2037461078]
+script = ExtResource("18_5tuhn")
+log_entry = ExtResource("19_5tuhn")
+metadata/_custom_type_script = "uid://dfrw1ipgove7l"
+
+[node name="LogUnlocker4" type="Node" parent="Area3D" unique_id=1752275798]
+script = ExtResource("18_5tuhn")
+log_entry = ExtResource("20_devvj")
+metadata/_custom_type_script = "uid://dfrw1ipgove7l"
 
 [editable path="Player"]
 [editable path="Generator"]
